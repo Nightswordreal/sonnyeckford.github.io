@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Engineering Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #ebf8ff; }
+        .nav-active { border-bottom: 4px solid #1e40af; color: #1e40af; }
+        .accent-dark { color: #1e3a8a; }
+    </style>
+</head>
+<body>
+
+    <nav class="bg-white shadow-md mb-10">
+        <div class="max-w-4xl mx-auto flex justify-center space-x-12 p-5 font-bold uppercase tracking-wide">
+            <a href="index.html" class="hover:text-blue-800 pb-1">Start</a>
+            <a href="projects.html" class="nav-active pb-1">Projects</a>
+            <a href="blank.html" class="hover:text-blue-800 pb-1">Blank</a>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 pb-20">
+        <h2 class="text-4xl font-black accent-dark mb-12 text-center">Featured Projects</h2>
+
+        <div class="grid md:grid-cols-2 gap-10">
+            
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-8 border-blue-800">
+                <h3 class="text-2xl font-bold accent-dark">1. Prosthetics for Uganda</h3>
+                <p class="text-blue-600 font-bold text-sm mb-2 uppercase">Biomedical Engineering</p>
+                <ul class="text-gray-600 space-y-2">
+                    <li><strong>Goal:</strong> Functional, non-medical prosthetics.</li>
+                    <li><strong>Skills:</strong> 3D CAD, FDM printing, stress testing.</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-8 border-blue-600">
+                <h3 class="text-2xl font-bold accent-dark">2. Pwnagotchi Slim Edition</h3>
+                <p class="text-blue-600 font-bold text-sm mb-2 uppercase">Cybersecurity / Electronics</p>
+                <ul class="text-gray-600 space-y-2">
+                    <li><strong>Goal:</strong> Portable, gamified WiFi testing device.</li>
+                    <li><strong>Skills:</strong> Raspberry Pi, Linux, Soldering.</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-8 border-blue-800">
+                <h3 class="text-2xl font-bold accent-dark">3. American Rocketry Challenge</h3>
+                <p class="text-blue-600 font-bold text-sm mb-2 uppercase">Aerospace / Physics</p>
+                <ul class="text-gray-600 space-y-2">
+                    <li><strong>Goal:</strong> High-altitude launch targets.</li>
+                    <li><strong>Skills:</strong> OpenRocket, Calculus modeling.</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-8 border-blue-600">
+                <h3 class="text-2xl font-bold accent-dark">4. 3D Printed RC Plane</h3>
+                <p class="text-blue-600 font-bold text-sm mb-2 uppercase">Aviation / Manufacturing</p>
+                <ul class="text-gray-600 space-y-2">
+                    <li><strong>Goal:</strong> Test limits of 3D printed airframes.</li>
+                    <li><strong>Skills:</strong> ESC/Motor integration, Aerodynamics.</li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>
