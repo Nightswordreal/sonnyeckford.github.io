@@ -12,7 +12,7 @@
             overflow-x: hidden;
         }
 
-        /* The Sun Transition */
+        /* Sun Transition */
         #sun-logo {
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -29,38 +29,60 @@
         .nav-visible { transform: translateY(0) !important; opacity: 1 !important; }
         .sun-hidden { transform: scale(0) translateY(-200px); opacity: 0; }
 
-        /* Floating Atmosphere Elements */
+        /* The "M" Shaped Bird */
         .sky-element {
             position: absolute;
             pointer-events: none;
             z-index: 1;
         }
 
-        /* Simple CSS Clouds */
-        .cloud-shape {
-            background: white;
-            border-radius: 50px;
-            filter: blur(8px);
-            opacity: 0.7;
+        .bird-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 20px;
         }
 
-        /* Bird Animation */
-        .bird {
-            width: 30px;
+        .bird-wing {
+            width: 25px;
             height: 15px;
-            border-top: 2px solid #1e3a8a;
-            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-            display: inline-block;
-            transform: rotate(-10deg);
+            border: 4px solid #1e3a8a; /* Bold blue lines */
+            border-bottom: none;
+            border-left: none;
+            border-right: none;
+            border-radius: 50% 50% 0 0;
+            transform: rotate(-15deg);
+        }
+
+        .wing-right {
+            transform: rotate(15deg) scaleX(-1);
+            margin-left: -4px;
         }
 
         .bird-flap {
-            animation: flap 3s infinite ease-in-out;
+            animation: bird-soar 6s infinite ease-in-out;
         }
 
-        @keyframes flap {
-            0%, 100% { transform: scaleY(1) rotate(-10deg); }
-            50% { transform: scaleY(0.5) rotate(-5deg); }
+        .bird-flap .bird-wing {
+            animation: wing-beat 2s infinite ease-in-out;
+        }
+
+        @keyframes bird-soar {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-30px) translateX(15px); }
+        }
+
+        @keyframes wing-beat {
+            0%, 100% { transform: rotate(-15deg); }
+            50% { transform: rotate(-35deg) translateY(5px); }
+        }
+
+        .cloud-shape {
+            background: white;
+            border-radius: 50px;
+            filter: blur(12px);
+            opacity: 0.6;
         }
     </style>
 </head>
@@ -68,7 +90,7 @@
 
     <nav id="cloud-nav" class="fixed top-0 w-full z-50 p-5 shadow-lg">
         <div class="max-w-4xl mx-auto flex justify-between items-center px-6">
-            <span class="font-black text-blue-500 text-xl tracking-tighter">SONNY.SYS</span>
+            <span class="font-black text-blue-600 text-xl tracking-tighter">SONNY.SYS</span>
             <div class="flex space-x-10 font-bold uppercase text-xs tracking-widest text-blue-800">
                 <a href="index.html" class="text-blue-500 border-b-2 border-blue-500">Start</a>
                 <a href="projects.html" class="hover:text-blue-500">Projects</a>
@@ -78,7 +100,6 @@
     </nav>
 
     <header class="relative h-screen flex flex-col items-center justify-center text-center">
-        
         <div id="sun-container" class="z-20">
             <img id="sun-logo" src="images/sun.png" alt="Sonny" class="w-64 h-64 md:w-80 md:h-80 drop-shadow-2xl">
         </div>
@@ -88,16 +109,31 @@
             <p class="text-xl font-bold text-blue-900/60 uppercase tracking-widest">Engineering & Design</p>
         </div>
 
-        <div class="sky-element top-1/4 left-10 bird-flap"><div class="bird"></div></div>
-        <div class="sky-element top-1/3 left-20 bird-flap" style="animation-delay: 0.5s"><div class="bird"></div></div>
+        <div class="sky-element top-1/4 left-10 bird-flap">
+            <div class="bird-container">
+                <div class="bird-wing"></div>
+                <div class="bird-wing wing-right"></div>
+            </div>
+        </div>
+
+        <div class="sky-element top-1/3 right-20 bird-flap" style="animation-delay: 1.5s">
+            <div class="bird-container">
+                <div class="bird-wing"></div>
+                <div class="bird-wing wing-right"></div>
+            </div>
+        </div>
     </header>
 
     <section class="relative">
-        
         <div class="sky-element top-20 right-10 cloud-shape w-64 h-20"></div>
-        <div class="sky-element top-80 -left-10 cloud-shape w-80 h-24"></div>
-        <div class="sky-element top-[500px] right-20 bird-flap"><div class="bird"></div></div>
-        <div class="sky-element top-[900px] left-10 cloud-shape w-96 h-32 opacity-40"></div>
+        <div class="sky-element top-80 left-10 cloud-shape w-80 h-24"></div>
+        
+        <div class="sky-element top-[400px] left-20 bird-flap" style="animation-delay: 0.8s">
+            <div class="bird-container">
+                <div class="bird-wing"></div>
+                <div class="bird-wing wing-right"></div>
+            </div>
+        </div>
 
         <main class="max-w-3xl mx-auto py-32 px-6 relative z-20">
             <div class="bg-white/40 backdrop-blur-md p-12 rounded-[40px] shadow-2xl border border-white/50">
@@ -108,10 +144,7 @@
                     and the desire to make the complex accessible.
                 </p>
                 <div class="mt-10 pt-10 border-t border-blue-200 flex justify-between items-center">
-                    <div>
-                        <p class="text-xs font-bold uppercase text-blue-400">Main Focus</p>
-                        <p class="font-bold text-blue-900 leading-none">Aerospace & Robotics</p>
-                    </div>
+                    <p class="font-bold text-blue-900 leading-none">Aerospace & Robotics</p>
                     <a href="projects.html" class="bg-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-blue-500 transition-all">View All Work</a>
                 </div>
             </div>
@@ -123,10 +156,7 @@
         const nav = document.getElementById('cloud-nav');
 
         window.addEventListener('scroll', () => {
-            const scrollPos = window.scrollY;
-
-            // Trigger the Sun -> Menu transformation
-            if (scrollPos > 120) {
+            if (window.scrollY > 120) {
                 sun.classList.add('sun-hidden');
                 nav.classList.add('nav-visible');
             } else {
@@ -135,6 +165,5 @@
             }
         });
     </script>
-
 </body>
 </html>
