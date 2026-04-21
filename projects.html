@@ -6,14 +6,29 @@
     <title>Projects | Engineering Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #ebf8ff; }
+        body { background-color: #ebf8ff; overflow-x: hidden; }
         .nav-active { border-bottom: 4px solid #1e40af; color: #1e40af; }
-        .accent-dark { color: #1e3a8a; }
+        
+        .carousel-container {
+            display: flex; align-items: center; justify-content: center;
+            perspective: 1000px; height: 400px; position: relative;
+        }
+
+        .carousel-item {
+            position: absolute; width: 350px; height: 250px;
+            transition: all 0.5s ease-in-out; border-radius: 15px;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #fff; opacity: 0; pointer-events: none;
+        }
+
+        .item-active { opacity: 1; z-index: 10; transform: translateZ(100px); pointer-events: auto; border: 4px solid #1e40af; }
+        .item-prev { opacity: 0.6; z-index: 5; transform: translateX(-280px) scale(0.8) rotateY(20deg); }
+        .item-next { opacity: 0.6; z-index: 5; transform: translateX(280px) scale(0.8) rotateY(-20deg); }
     </style>
 </head>
 <body>
 
-    <nav class="bg-white shadow-md mb-10">
+    <nav class="bg-white shadow-md mb-6">
         <div class="max-w-4xl mx-auto flex justify-center space-x-12 p-5 font-bold uppercase tracking-wide">
             <a href="index.html" class="hover:text-blue-800 pb-1">Start</a>
             <a href="projects.html" class="nav-active pb-1">Projects</a>
@@ -21,48 +36,64 @@
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-6 pb-20">
-        <h2 class="text-4xl font-black accent-dark mb-12 text-center">Featured Projects</h2>
-
-        <div class="grid md:grid-cols-2 gap-10">
-            
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-8 border-blue-800">
-                <h3 class="text-2xl font-bold accent-dark">1. Prosthetics for Uganda</h3>
-                <p class="text-blue-600 font-bold text-sm mb-2 uppercase">Biomedical Engineering</p>
-                <ul class="text-gray-600 space-y-2">
-                    <li><strong>Goal:</strong> Functional, non-medical prosthetics.</li>
-                    <li><strong>Skills:</strong> 3D CAD, FDM printing, stress testing.</li>
-                </ul>
+    <section class="max-w-6xl mx-auto mb-10 text-center">
+        <h2 class="text-blue-900 font-black text-3xl mb-8 uppercase">Project Gallery</h2>
+        <div class="carousel-container" id="carousel-target">
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-8 border-blue-600">
-                <h3 class="text-2xl font-bold accent-dark">2. Pwnagotchi Slim Edition</h3>
-                <p class="text-blue-600 font-bold text-sm mb-2 uppercase">Cybersecurity / Electronics</p>
-                <ul class="text-gray-600 space-y-2">
-                    <li><strong>Goal:</strong> Portable, gamified WiFi testing device.</li>
-                    <li><strong>Skills:</strong> Raspberry Pi, Linux, Soldering.</li>
-                </ul>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-8 border-blue-800">
-                <h3 class="text-2xl font-bold accent-dark">3. American Rocketry Challenge</h3>
-                <p class="text-blue-600 font-bold text-sm mb-2 uppercase">Aerospace / Physics</p>
-                <ul class="text-gray-600 space-y-2">
-                    <li><strong>Goal:</strong> High-altitude launch targets.</li>
-                    <li><strong>Skills:</strong> OpenRocket, Calculus modeling.</li>
-                </ul>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-8 border-blue-600">
-                <h3 class="text-2xl font-bold accent-dark">4. 3D Printed RC Plane</h3>
-                <p class="text-blue-600 font-bold text-sm mb-2 uppercase">Aviation / Manufacturing</p>
-                <ul class="text-gray-600 space-y-2">
-                    <li><strong>Goal:</strong> Test limits of 3D printed airframes.</li>
-                    <li><strong>Skills:</strong> ESC/Motor integration, Aerodynamics.</li>
-                </ul>
-            </div>
-
+        <div class="flex justify-center space-x-4 mt-6">
+            <button onclick="rotateCarousel(-1)" class="bg-blue-800 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700 shadow-lg">←</button>
+            <button onclick="rotateCarousel(1)" class="bg-blue-800 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700 shadow-lg">→</button>
         </div>
-    </main>
+    </section>
+
+    <script>
+        // --- CONFIGURATION: JUST ADD YOUR FILENAMES HERE ---
+        const projectImages = [
+            { file: 'DVEE6368.JPG', title: 'Prosthetics for Uganda' },
+            { file: 'LSPY6041.JPG', title: 'Pwnagotchi Slim' },
+            { file: 'TDHS4413.JPG', title: 'Rocket Simulation' },
+        ];
+
+        const container = document.getElementById('carousel-target');
+        let currentIndex = 0;
+
+        // Automatically create the HTML for each image
+        projectImages.forEach((imgObj, index) => {
+            const div = document.createElement('div');
+            div.className = 'carousel-item';
+            div.innerHTML = `
+                <img src="images/${imgObj.file}" class="w-full h-full object-cover">
+                <div class="absolute bottom-0 bg-blue-900/90 text-white p-3 w-full text-center text-sm font-bold">
+                    ${imgObj.title}
+                </div>
+            `;
+            container.appendChild(div);
+        });
+
+        const items = document.querySelectorAll('.carousel-item');
+
+        function updateDisplay() {
+            items.forEach((item, i) => {
+                item.className = 'carousel-item'; // Reset classes
+                
+                if (i === currentIndex) {
+                    item.classList.add('item-active');
+                } else if (i === (currentIndex - 1 + items.length) % items.length) {
+                    item.classList.add('item-prev');
+                } else if (i === (currentIndex + 1) % items.length) {
+                    item.classList.add('item-next');
+                }
+            });
+        }
+
+        function rotateCarousel(direction) {
+            currentIndex = (currentIndex + direction + items.length) % items.length;
+            updateDisplay();
+        }
+
+        // Initialize the first view
+        updateDisplay();
+    </script>
 </body>
 </html>
