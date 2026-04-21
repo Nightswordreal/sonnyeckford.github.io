@@ -1,154 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Detail | Sonny's Skyward</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { 
-            background: linear-gradient(to bottom, #87CEEB 0%, #BAE6FD 50%, #E0F2FE 100%);
-            min-height: 100vh; overflow-x: hidden;
+<script>
+    // ==========================================
+    // CONFIGURATION: UPDATED FILENAMES
+    // ==========================================
+    const myProjects = [
+        { 
+            id: 'arm', // Points to arm.html
+            image: 'uganda.jpg', 
+            title: 'Prosthetics for Uganda', 
+            desc: 'Low-cost 3D printed solutions for functional mobility.' 
+        },
+        { 
+            id: 'pwn', // Points to pwn.html
+            image: 'pwnagotchi.png', 
+            title: 'Pwnagotchi Slim', 
+            desc: 'Custom-built WiFi auditing companion with integrated hardware.' 
+        },
+        { 
+            id: 'rocket', // Points to rocket.html
+            image: 'rocket.jpg', 
+            title: 'Rocketry Challenge', 
+            desc: 'Aerospace simulation and construction for high-altitude flight.' 
+        },
+        { 
+            id: 'plane', // Points to plane.html
+            image: 'rc-plane.jpg', 
+            title: '3D Printed Aircraft', 
+            desc: 'Testing the limits of lightweight airframe manufacturing.' 
         }
+    ];
 
-        /* Consistent "Glassmorphism" effect */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(15px);
-            border: 2px solid white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
+    // ==========================================
+    // LOGIC: GENERATING THE PAGE
+    // ==========================================
+    const carousel = document.getElementById('carousel-target');
+    const tileTarget = document.getElementById('tile-target');
 
-        /* For the side-image flow */
-        .img-block {
-            transition: transform 0.3s ease;
-        }
-        .img-block:hover { transform: translateY(-5px); }
+    myProjects.forEach((p, index) => {
+        // Build Carousel Item
+        const cDiv = document.createElement('div');
+        cDiv.className = 'carousel-item';
+        cDiv.innerHTML = `
+            <img src="images/${p.image}" class="w-full h-full object-cover">
+            <div class="absolute bottom-0 w-full bg-blue-900/80 text-white text-[10px] p-2 text-center font-bold uppercase">
+                ${p.title}
+            </div>`;
+        carousel.appendChild(cDiv);
 
-        /* M Bird styles for consistency */
-        .bird-wing { width: 20px; height: 10px; border: 3px solid #1e3a8a; border-bottom: none; border-left: none; border-right: none; border-radius: 50% 50% 0 0; }
-        .wing-right { transform: rotate(15deg) scaleX(-1); margin-left: -4px; }
-        .wing-left { transform: rotate(-15deg); }
-    </style>
-</head>
-<body class="text-blue-900 font-sans pb-20 relative">
+        // Build Vertical Tile - UPDATED LINK LOGIC
+        const tDiv = document.createElement('a');
+        tDiv.href = `${p.id}.html`; // This creates links like pwn.html, arm.html, etc.
+        tDiv.className = "project-tile flex flex-col md:flex-row items-center bg-white/70 backdrop-blur-sm p-6 rounded-3xl shadow-lg transition-all border-2 border-white overflow-hidden";
+        tDiv.innerHTML = `
+            <img src="images/${p.image}" class="w-full md:w-48 h-32 object-cover rounded-2xl mb-4 md:mb-0 md:mr-8 shadow-md">
+            <div>
+                <h3 class="text-2xl font-black text-blue-900">${p.title}</h3>
+                <p class="text-blue-800/70 font-medium mt-1">${p.desc}</p>
+                <span class="inline-block mt-4 text-xs font-black uppercase text-blue-500 tracking-widest">Open Project File →</span>
+            </div>`;
+        tileTarget.appendChild(tDiv);
+    });
 
-    <div class="absolute -left-10 top-20 opacity-30 flex"><div class="bird-wing wing-left"></div><div class="bird-wing wing-right"></div></div>
-    <div class="absolute -right-10 top-[600px] opacity-30 flex"><div class="bird-wing wing-left"></div><div class="bird-wing wing-right"></div></div>
+    // ==========================================
+    // ANIMATION: AUTO-SCROLL CAROUSEL
+    // ==========================================
+    let currentIndex = 0;
+    const items = document.querySelectorAll('.carousel-item');
 
-    <nav class="sticky top-0 z-50 p-6 bg-white/80 backdrop-blur-md shadow-sm">
-        <div class="max-w-6xl mx-auto flex justify-between items-center px-6">
-            <span class="font-black text-blue-500 text-xl tracking-tighter">SONNY.SYS</span>
-            <div class="flex space-x-12 font-bold uppercase text-xs tracking-widest text-blue-800">
-                <a href="index.html" class="hover:text-blue-500">Home</a>
-                <a href="projects.html" class="text-blue-600 border-b-2 border-blue-600">Back to Projects</a>
-                <a href="blank.html" class="hover:text-blue-500">Blank</a>
-            </div>
-        </div>
-    </nav>
+    function updateCarousel() {
+        items.forEach((item, i) => {
+            item.className = 'carousel-item';
+            if (i === currentIndex) item.classList.add('item-active');
+            else if (i === (currentIndex - 1 + items.length) % items.length) item.classList.add('item-prev');
+            else if (i === (currentIndex + 1) % items.length) item.classList.add('item-next');
+        });
+        currentIndex = (currentIndex + 1) % items.length;
+    }
 
-    <header class="text-center py-20 px-6">
-        <h1 id="p-title" class="text-6xl font-black text-white drop-shadow-md mb-4 uppercase tracking-tighter italic">Loading...</h1>
-        <p id="p-subtitle" class="text-2xl font-bold text-blue-800/80 uppercase tracking-widest">Engineering Journal</p>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-6 space-y-16">
-        
-        <section id="p-intro" class="glass-panel p-12 rounded-[40px] text-center max-w-4xl mx-auto">
-            <h2 class="text-3xl font-black mb-6 uppercase tracking-tight text-blue-950">Mission Objective</h2>
-            <p id="p-intro-text" class="text-xl leading-relaxed text-blue-900/90 font-medium"></p>
-        </div>
-
-        <div id="journey-target" class="space-y-20">
-            </div>
-
-        <section id="p-conclusion" class="glass-panel p-12 rounded-[40px] text-center max-w-4xl mx-auto mt-20">
-            <h2 class="text-3xl font-black mb-6 uppercase tracking-tight text-blue-950">Mission Summary</h2>
-            <p id="p-con-text" class="text-xl leading-relaxed text-blue-900/90 font-medium"></p>
-        </div>
-
-    </main>
-
-    <script>
-        // === PROJECT DATABASE (Updated structure) ===
-        const projectData = {
-            'uganda': {
-                title: 'Uganda Prosthetics',
-                subtitle: 'Biomedical Engineering',
-                intro: 'Create a non-medical prosthetic device that is simple, durable, and repairable using basic FDM 3D printing in resource-limited environments.',
-                steps: [
-                    { image: 'images/uganda-cad.png', text: 'Step 1: Onshape Modeling. Designing a modular socket and grip that is parametric, allowing rapid resizing based on patient scan data.' },
-                    { image: 'images/uganda-test.jpg', text: 'Step 2: Material Testing. PLA+ stress tests to ensure the wrist-joint mechanism can sustain daily-utility weight-loading of 5kg without catastrophic failure.' },
-                    { image: 'images/uganda-field.jpg', text: 'Step 3: Iteration in the Field. Modifying the grip geometry after feedback to provide better leverage for picking up agricultural tools.' }
-                ],
-                conclusion: 'Developed a durable, parameter-driven prosthetic system that provides functional utility and can be manufactured locally, reducing reliance on expensive imports.'
-            },
-            'pwn': {
-                title: 'Pwnagotchi Slim',
-                subtitle: 'Cybersecurity & Hardware',
-                intro: 'Develop a highly portable, unified enclosure for the Pwnagotchi project, integrating an e-ink display and a high-capacity battery while maximizing stealth.',
-                steps: [
-                    { image: 'images/pwn-soldering.jpg', text: 'Step 1: Soldering the Pi Zero W. Precision header modification to minimize height and connect the Waveshare e-ink display directly to the GPIO pins.' },
-                    { image: 'images/pwn-cad.png', text: 'Step 2: Custom Enclosure CAD. Designing a slip-fit 3D case that aligns the e-ink display with the battery pack and uses passive cooling vents.' },
-                    { image: 'images/pwn-active.gif', text: 'Step 3: Linux Configuration. Building the image and tuning the AI "personality" on Raspbian to optimize WiFi packet capture and battery efficiency.' }
-                ],
-                conclusion: 'Successfully integrated the Pwnagotchi hardware into a slim, pocketable enclosure. The project provided critical skills in advanced soldering, thermal management in compact spaces, and Linux automation.'
-            },
-            'rocket': {
-                title: 'American Rocketry Challenge',
-                subtitle: 'Aerospace & Math',
-                intro: 'Lead a student team to design, simulate, build, and launch a reliable, stable rocket to achieve a target altitude of 800 feet and a specific duration window.',
-                steps: [
-                    { image: 'images/rocket-openrocket.png', text: 'Step 1: OpenRocket Simulations. Iterating on the fin geometry and CG/CP separation to ensure stability during supersonic ascent.' },
-                    { image: 'images/rocket-assembly.jpg', text: 'Step 2: Manufacturing. Laser-cutting balsa fins and utilizing composite materials to maximize structure strength-to-weight ratio.' },
-                    { image: 'images/rocket-launch.mp4', text: 'Step 3: Mission Day. Executing the flight checklist and achieving a stable apogee. The challenge was adjusting ballast for local weather conditions.' }
-                ],
-                conclusion: 'Achieved a successful, stable flight profile. This project verified our calculus-based simulations and taught us high-pressure team project management.'
-            }
-        };
-
-        // LOAD DATA BASED ON URL
-        const params = new URLSearchParams(window.location.search);
-        const projectID = params.get('id');
-        const data = projectData[projectID];
-
-        const target = document.getElementById('journey-target');
-
-        if (data) {
-            document.title = `${data.title} | Sonny's Skyward`;
-            document.getElementById('p-title').innerText = data.title;
-            document.getElementById('p-subtitle').innerText = data.subtitle;
-            document.getElementById('p-intro-text').innerText = data.intro;
-            document.getElementById('p-con-text').innerText = data.conclusion;
-            
-            // DYNAMICALLY BUILD THE SECTIONS
-            data.steps.forEach((step, index) => {
-                const section = document.createElement('section');
-                
-                // Set alternate grid layout (image left, then image right)
-                const layoutClass = (index % 2 === 0) ? 'md:grid-cols-5' : 'md:grid-cols-5 md:grid-flow-col-dense';
-                section.className = `grid md:gap-12 items-center text-center ${layoutClass}`;
-                
-                const imgBlock = document.createElement('div');
-                imgBlock.className = 'img-block md:col-span-2 glass-panel p-4 rounded-3xl';
-                imgBlock.innerHTML = `<img src="${step.image}" alt="Step ${index+1}" class="w-full h-80 object-cover rounded-xl shadow-lg border-2 border-white">`;
-
-                const textBlock = document.createElement('div');
-                textBlock.className = 'md:col-span-3 text-left glass-panel p-10 rounded-[30px] self-start mt-10 md:mt-0';
-                textBlock.innerHTML = `<p class="text-blue-600 font-bold text-xs mb-2 uppercase tracking-widest">Phase ${index+1}</p><p class="text-lg leading-relaxed text-blue-900/80">${step.text}</p>`;
-
-                // If index is odd, swap elements
-                if (index % 2 !== 0) {
-                    section.appendChild(textBlock);
-                    section.appendChild(imgBlock);
-                } else {
-                    section.appendChild(imgBlock);
-                    section.appendChild(textBlock);
-                }
-                
-                target.appendChild(section);
-            });
-        }
-    </script>
-</body>
-</html>
+    if(items.length > 0) {
+        updateCarousel();
+        setInterval(updateCarousel, 3000); // Scrolls every 3 seconds
+    }
+</script>
