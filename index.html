@@ -3,34 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | Engineering Portfolio</title>
+    <title>Sonny's Portfolio | Skyward</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom Blue Theme */
-        body { background-color: #ebf8ff; } /* Light Blue Background */
-        .nav-active { border-bottom: 4px solid #1e40af; color: #1e40af; }
-        .accent-dark { color: #1e3a8a; } /* Dark Blue Accent */
+        body { 
+            background: linear-gradient(to bottom, #87CEEB 0%, #BAE6FD 50%, #E0F2FE 100%);
+            min-height: 250vh;
+            overflow-x: hidden;
+        }
+
+        /* The Sun Transition */
+        #sun-logo {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #cloud-nav {
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            transform: translateY(-100%);
+            opacity: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 40px 40px;
+        }
+
+        .nav-visible { transform: translateY(0) !important; opacity: 1 !important; }
+        .sun-hidden { transform: scale(0) translateY(-200px); opacity: 0; }
+
+        /* Floating Atmosphere Elements */
+        .sky-element {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Simple CSS Clouds */
+        .cloud-shape {
+            background: white;
+            border-radius: 50px;
+            filter: blur(8px);
+            opacity: 0.7;
+        }
+
+        /* Bird Animation */
+        .bird {
+            width: 30px;
+            height: 15px;
+            border-top: 2px solid #1e3a8a;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            display: inline-block;
+            transform: rotate(-10deg);
+        }
+
+        .bird-flap {
+            animation: flap 3s infinite ease-in-out;
+        }
+
+        @keyframes flap {
+            0%, 100% { transform: scaleY(1) rotate(-10deg); }
+            50% { transform: scaleY(0.5) rotate(-5deg); }
+        }
     </style>
 </head>
-<body class="text-gray-800 font-sans">
+<body class="font-sans text-blue-900">
 
-    <nav class="bg-white shadow-md mb-10">
-        <div class="max-w-4xl mx-auto flex justify-center space-x-12 p-5 font-bold uppercase tracking-wide">
-            <a href="index.html" class="nav-active pb-1">Start</a>
-            <a href="projects.html" class="hover:text-blue-800 pb-1">Projects</a>
-            <a href="blank.html" class="hover:text-blue-800 pb-1">Blank</a>
+    <nav id="cloud-nav" class="fixed top-0 w-full z-50 p-5 shadow-lg">
+        <div class="max-w-4xl mx-auto flex justify-between items-center px-6">
+            <span class="font-black text-blue-500 text-xl tracking-tighter">SONNY.SYS</span>
+            <div class="flex space-x-10 font-bold uppercase text-xs tracking-widest text-blue-800">
+                <a href="index.html" class="text-blue-500 border-b-2 border-blue-500">Start</a>
+                <a href="projects.html" class="hover:text-blue-500">Projects</a>
+                <a href="blank.html" class="hover:text-blue-500">Blank</a>
+            </div>
         </div>
     </nav>
 
-    <main class="max-w-3xl mx-auto text-center py-20 px-6">
-        <h1 class="text-5xl font-extrabold accent-dark mb-4">Engineering & Robotics Portfolio</h1>
-        <h3 class="text-xl font-medium text-blue-700 mb-8 text-blue-600">Student Maker | Developer | CAD Designer</h3>
+    <header class="relative h-screen flex flex-col items-center justify-center text-center">
         
-        <p class="text-lg leading-relaxed text-gray-700 bg-white p-8 rounded-2xl shadow-sm border border-blue-100">
-            Welcome to my technical portfolio. I specialize in bridging the gap between digital code and physical hardware, 
-            focusing on aerospace simulations, 3D manufacturing, and community-driven engineering solutions.
-        </p>
-    </main>
+        <div id="sun-container" class="z-20">
+            <img id="sun-logo" src="images/sun.png" alt="Sonny" class="w-64 h-64 md:w-80 md:h-80 drop-shadow-2xl">
+        </div>
+
+        <div class="z-20 mt-6">
+            <h1 class="text-7xl font-black text-white drop-shadow-lg tracking-tighter">SONNY</h1>
+            <p class="text-xl font-bold text-blue-900/60 uppercase tracking-widest">Engineering & Design</p>
+        </div>
+
+        <div class="sky-element top-1/4 left-10 bird-flap"><div class="bird"></div></div>
+        <div class="sky-element top-1/3 left-20 bird-flap" style="animation-delay: 0.5s"><div class="bird"></div></div>
+    </header>
+
+    <section class="relative">
+        
+        <div class="sky-element top-20 right-10 cloud-shape w-64 h-20"></div>
+        <div class="sky-element top-80 -left-10 cloud-shape w-80 h-24"></div>
+        <div class="sky-element top-[500px] right-20 bird-flap"><div class="bird"></div></div>
+        <div class="sky-element top-[900px] left-10 cloud-shape w-96 h-32 opacity-40"></div>
+
+        <main class="max-w-3xl mx-auto py-32 px-6 relative z-20">
+            <div class="bg-white/40 backdrop-blur-md p-12 rounded-[40px] shadow-2xl border border-white/50">
+                <h2 class="text-4xl font-black mb-8 text-blue-900 italic">"The Sky is the Limit."</h2>
+                <p class="text-xl leading-relaxed font-medium text-blue-800/90">
+                    I build things that fly, things that help, and things that code. 
+                    From high-altitude rocketry to custom bio-prosthetics, my work is driven by curiosity 
+                    and the desire to make the complex accessible.
+                </p>
+                <div class="mt-10 pt-10 border-t border-blue-200 flex justify-between items-center">
+                    <div>
+                        <p class="text-xs font-bold uppercase text-blue-400">Main Focus</p>
+                        <p class="font-bold text-blue-900 leading-none">Aerospace & Robotics</p>
+                    </div>
+                    <a href="projects.html" class="bg-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-blue-500 transition-all">View All Work</a>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <script>
+        const sun = document.getElementById('sun-logo');
+        const nav = document.getElementById('cloud-nav');
+
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.scrollY;
+
+            // Trigger the Sun -> Menu transformation
+            if (scrollPos > 120) {
+                sun.classList.add('sun-hidden');
+                nav.classList.add('nav-visible');
+            } else {
+                sun.classList.remove('sun-hidden');
+                nav.classList.remove('nav-visible');
+            }
+        });
+    </script>
 
 </body>
 </html>
