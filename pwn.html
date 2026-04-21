@@ -47,7 +47,7 @@
         <section class="glass-panel p-10 rounded-[40px]">
             <h2 class="text-2xl font-black mb-4 uppercase text-blue-950 italic">Introduction</h2>
             <p class="text-lg leading-relaxed text-blue-900/90 font-medium">
-                The Pwnagotchi is a popular A2C-based "AI" for WiFi auditing... [Full Intro Text]
+                The Pwnagotchi is a popular A2C-based "AI" for WiFi auditing, but most builds rely on bulky battery hats or standard cases that sacrifice portability. For this project, my goal was to push the limits of the form factor. I set out to create a truly pocket-sized, slim-profile Pwnagotchi by physically modifying the hardware, integrating a dedicated power source, and designing a custom-fitted enclosure from the ground up to ensure it was both functional and rugged for mobile use.
             </p>
         </section>
 
@@ -77,13 +77,17 @@
         const pwnSteps = [
             { 
                 title: "Hardware Customization & Slimming",
-                images: ["ScreenAfter.jpg", "antennaAfter.jpg", "antennaBefore.jpg"], // Array 1
-                text: "To achieve the thinnest profile possible, I moved beyond simple assembly... [Phase 1 Text]"
+                images: ["ScreenAfter.jpg", "antennaAfter.jpg", "antennaBefore.jpg","SlimSide.jpg"], // Array 1
+                text: "To achieve the thinnest profile possible, I moved beyond simple assembly and performed several permanent hardware modifications. This involved desoldering the bulky ribbon cable connector on the Waveshare screen to allow it to sit flush against the board. I also clipped the GPIO headers to their minimum height, significantly reducing the "sandwich" thickness of the device.
+
+The most technical challenge was the connectivity upgrade; I performed precision soldering to attach a U.FL antenna directly to the Pi. This required a steady hand and high heat control given the incredibly small solder pads. These changes resulted in a high-performance auditing tool that is roughly half the thickness of a standard build."
             },
             { 
                 title: "Enclosure Design & Power Integration",
-                images: ["BatCB.jpg", "BatCF.jpg", "BatCS.jpg","SlimCF.jpg","SlimCase.jpg","SlimSide.jpg"], // Array 2
-                text: "Because my hardware modifications changed the physical dimensions... [Phase 2 Text]"
+                images: ["BatCB.jpg", "BatCF.jpg", "BatCS.jpg","SlimCF.jpg","SlimCase.jpg"], // Array 2
+                text: "Because my hardware modifications changed the physical dimensions of the device, off-the-shelf 3D models were no longer compatible. I designed a bespoke, minimalist case to hug the slimmed-down internals.
+
+For the power system, I integrated a lithium battery that connects to the Pi via a shortened micro-USB cable for reliable power delivery. To house this, I engineered a secondary case iteration that includes a dedicated battery compartment and a reinforced keychain loop. This transformation turned the Pwnagotchi from a desk-bound gadget into a fully portable, "everyday carry" tool that can be securely clipped to a bag or keys."
             }
         ];
 
