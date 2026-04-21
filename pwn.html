@@ -20,6 +20,7 @@
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
+        /* M Bird styles for sky consistency */
         .bird-wing { width: 20px; height: 10px; border: 3px solid #1e3a8a; border-bottom: none; border-left: none; border-right: none; border-radius: 50% 50% 0 0; }
         .wing-right { transform: rotate(15deg) scaleX(-1); margin-left: -4px; }
         .wing-left { transform: rotate(-15deg); }
@@ -59,39 +60,47 @@
 
         <div id="steps-container" class="space-y-16"></div>
 
+        <div id="conclusion-target" class="mt-20"></div>
+
     </main>
 
     <script>
         // ==========================================
-        // CONFIGURATION: ARRAYS FOR IMAGES & CONTENT
+        // 1. PROJECT DATA CONFIGURATION
         // ==========================================
         
         const materials = [
-            "Raspberry Pi Zero 2W",
-            "Waveshare e-Paper v4",
-            "U.FL Antenna & pigtail",
-            "Lithium Polymer (LiPo) Battery",
-            "3D Printer & Soldering Iron"
+            "⚡ Microcontroller: Raspberry Pi Zero 2W",
+            "📟 Display: Waveshare e-Paper v4",
+            "📶 Connectivity: U.FL Antenna & pigtail",
+            "🔋 Power: Lithium Polymer (LiPo) Battery",
+            "🛠️ Fabrication: 3D Printer & Soldering Iron"
         ];
 
         const pwnSteps = [
             { 
                 title: "Hardware Customization & Slimming",
-                images: ["ScreenAfter.jpg", "antennaAfter.jpg", "antennaBefore.jpg","SlimSide.jpg"], // Array 1
-                text: "To achieve the thinnest profile possible, I moved beyond simple assembly and performed several permanent hardware modifications. This involved desoldering the bulky ribbon cable connector on the Waveshare screen to allow it to sit flush against the board. I also clipped the GPIO headers to their minimum height, significantly reducing the "sandwich" thickness of the device. The most technical challenge was the connectivity upgrade; I performed precision soldering to attach a U.FL antenna directly to the Pi. This required a steady hand and high heat control given the incredibly small solder pads. These changes resulted in a high-performance auditing tool that is roughly half the thickness of a standard build."
+                // Add your image filenames to these arrays
+                images: ["pwn-solder-1.jpg", "pwn-solder-2.jpg"], 
+                text: "To achieve the thinnest profile possible, I moved beyond simple assembly and performed several permanent hardware modifications. This involved desoldering the bulky ribbon cable connector on the Waveshare screen to allow it to sit flush against the board. I also clipped the GPIO headers to their minimum height, significantly reducing the 'sandwich' thickness of the device. The most technical challenge was the connectivity upgrade; I performed precision soldering to attach a U.FL antenna directly to the Pi. This required a steady hand and high heat control given the incredibly small solder pads."
             },
             { 
                 title: "Enclosure Design & Power Integration",
-                images: ["BatCB.jpg", "BatCF.jpg", "BatCS.jpg","SlimCF.jpg","SlimCase.jpg"], // Array 2
-                text: "Because my hardware modifications changed the physical dimensions of the device, off-the-shelf 3D models were no longer compatible. I designed a bespoke, minimalist case to hug the slimmed-down internals. For the power system, I integrated a lithium battery that connects to the Pi via a shortened micro-USB cable for reliable power delivery. To house this, I engineered a secondary case iteration that includes a dedicated battery compartment and a reinforced keychain loop. This transformation turned the Pwnagotchi from a desk-bound gadget into a fully portable, "everyday carry" tool that can be securely clipped to a bag or keys."
+                images: ["pwn-cad-1.png", "pwn-final-1.jpg"], 
+                text: "Because my hardware modifications changed the physical dimensions of the device, off-the-shelf 3D models were no longer compatible. I designed a bespoke, minimalist case to hug the slimmed-down internals. For the power system, I integrated a lithium battery that connects to the Pi via a shortened micro-USB cable for reliable power delivery. To house this, I engineered a secondary case iteration that includes a dedicated battery compartment and a reinforced keychain loop. This transformation turned the Pwnagotchi from a desk-bound gadget into a fully portable tool."
             }
         ];
 
+        const projectConclusion = {
+            title: "Mission Summary",
+            text: "This project taught me how to do precise hardware hacking and 3D design. I learned how to solder very small parts, like the antenna and screen connections, to make the device as thin as possible. Since my changes meant standard cases wouldn't work, I used CAD to design and 3D print a custom slim housing and a battery case with a keychain. This project shows I can take a complex idea, modify the hardware to make it better, and build my own custom parts to make it a finished, portable product."
+        };
+
         // ==========================================
-        // LOGIC: INJECTING CONTENT
+        // 2. INJECTION LOGIC
         // ==========================================
 
-        // Fill Materials
+        // Build Materials List
         const matTarget = document.getElementById('materials-list');
         materials.forEach(m => {
             const li = document.createElement('li');
@@ -100,15 +109,14 @@
             matTarget.appendChild(li);
         });
 
-        // Build Journey Steps
+        // Build Journey Steps (Alternating Layout)
         const container = document.getElementById('steps-container');
-
         pwnSteps.forEach((step, index) => {
             const section = document.createElement('section');
             const isEven = index % 2 === 0;
             section.className = `flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-10`;
 
-            // Create Image Gallery (Horizontal Scroll)
+            // Build Image Gallery
             let imageHTML = `<div class="flex gap-4 overflow-x-auto hide-scroll p-2 snap-x">`;
             step.images.forEach(img => {
                 imageHTML += `
@@ -130,6 +138,17 @@
             `;
             container.appendChild(section);
         });
+
+        // Build Conclusion
+        const conclusionTarget = document.getElementById('conclusion-target');
+        const conSection = document.createElement('section');
+        conSection.className = "glass-panel p-10 rounded-[40px] text-center max-w-4xl mx-auto mb-20";
+        conSection.innerHTML = `
+            <h2 class="text-3xl font-black mb-6 uppercase tracking-tight text-blue-950 italic">${projectConclusion.title}</h2>
+            <p class="text-xl leading-relaxed text-blue-900/90 font-medium italic">"${projectConclusion.text}"</p>
+        `;
+        conclusionTarget.appendChild(conSection);
+
     </script>
 </body>
 </html>
