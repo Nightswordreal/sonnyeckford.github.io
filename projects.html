@@ -3,97 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects | Engineering Portfolio</title>
+    <title>Projects | Sonny's Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #ebf8ff; overflow-x: hidden; }
-        .nav-active { border-bottom: 4px solid #1e40af; color: #1e40af; }
-        
+        body { 
+            background: linear-gradient(to bottom, #87CEEB 0%, #BAE6FD 50%, #E0F2FE 100%);
+            min-height: 200vh;
+            overflow-x: hidden;
+        }
+
+        /* --- CAROUSEL STYLES --- */
         .carousel-container {
             display: flex; align-items: center; justify-content: center;
-            perspective: 1000px; height: 400px; position: relative;
+            perspective: 1000px; height: 350px; position: relative;
         }
-
         .carousel-item {
-            position: absolute; width: 350px; height: 250px;
-            transition: all 0.5s ease-in-out; border-radius: 15px;
-            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: absolute; width: 320px; height: 220px;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 20px;
+            overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             background: #fff; opacity: 0; pointer-events: none;
         }
-
         .item-active { opacity: 1; z-index: 10; transform: translateZ(100px); pointer-events: auto; border: 4px solid #1e40af; }
-        .item-prev { opacity: 0.6; z-index: 5; transform: translateX(-280px) scale(0.8) rotateY(20deg); }
-        .item-next { opacity: 0.6; z-index: 5; transform: translateX(280px) scale(0.8) rotateY(-20deg); }
+        .item-prev { opacity: 0.5; z-index: 5; transform: translateX(-250px) scale(0.8) rotateY(25deg); }
+        .item-next { opacity: 0.5; z-index: 5; transform: translateX(250px) scale(0.8) rotateY(-25deg); }
+
+        /* --- M BIRD STYLES --- */
+        .bird-container { display: flex; align-items: center; justify-content: center; width: 40px; height: 15px; opacity: 0.4; }
+        .bird-wing { width: 20px; height: 12px; border: 3px solid #1e3a8a; border-bottom: none; border-left: none; border-right: none; border-radius: 50% 50% 0 0; }
+        .wing-right { transform: rotate(15deg) scaleX(-1); margin-left: -4px; }
+        .wing-left { transform: rotate(-15deg); }
+        
+        .project-tile:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.95); }
     </style>
 </head>
-<body>
+<body class="text-blue-900 font-sans">
 
-    <nav class="bg-white shadow-md mb-6">
-        <div class="max-w-4xl mx-auto flex justify-center space-x-12 p-5 font-bold uppercase tracking-wide">
-            <a href="index.html" class="hover:text-blue-800 pb-1">Start</a>
-            <a href="projects.html" class="nav-active pb-1">Projects</a>
-            <a href="blank.html" class="hover:text-blue-800 pb-1">Blank</a>
+    <nav class="sticky top-0 z-50 p-5 bg-white/80 backdrop-blur-md shadow-sm">
+        <div class="max-w-4xl mx-auto flex justify-center space-x-12 font-black uppercase tracking-widest text-xs">
+            <a href="index.html" class="hover:text-blue-500">Start</a>
+            <a href="projects.html" class="text-blue-600 border-b-2 border-blue-600">Projects</a>
+            <a href="blank.html" class="hover:text-blue-500">Blank</a>
         </div>
     </nav>
 
-    <section class="max-w-6xl mx-auto mb-10 text-center">
-        <h2 class="text-blue-900 font-black text-3xl mb-8 uppercase">Project Gallery</h2>
-        <div class="carousel-container" id="carousel-target">
-            </div>
-
-        <div class="flex justify-center space-x-4 mt-6">
-            <button onclick="rotateCarousel(-1)" class="bg-blue-800 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700 shadow-lg">←</button>
-            <button onclick="rotateCarousel(1)" class="bg-blue-800 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700 shadow-lg">→</button>
-        </div>
+    <section class="py-10">
+        <div class="carousel-container" id="carousel-target"></div>
     </section>
 
+    <main class="max-w-4xl mx-auto px-6 pb-20 relative">
+        <div class="absolute -left-10 top-20 bird-container"><div class="bird-wing wing-left"></div><div class="bird-wing wing-right"></div></div>
+
+        <h2 class="text-center font-black text-3xl uppercase tracking-tighter mb-12 text-white drop-shadow-md">The Hangar</h2>
+
+        <div class="space-y-8" id="tile-target"></div>
+    </main>
+
     <script>
-        // --- CONFIGURATION: JUST ADD YOUR FILENAMES HERE ---
-        const projectImages = [
-            { file: 'DVEE6368.JPG', title: 'Prosthetics for Uganda' },
-            { file: 'LSPY6041.JPG', title: 'Pwnagotchi Slim' },
-            { file: 'TDHS4413.JPG', title: 'Rocket Simulation' },
+        // ==========================================
+        // CONFIGURATION: JUST EDIT THIS LIST
+        // ==========================================
+        const myProjects = [
+            { 
+                id: 'uganda', 
+                image: 'DVEE6368.JPG', 
+                title: 'Prosthetics for Uganda', 
+                desc: 'Low-cost 3D printed solutions for functional mobility.' 
+            },
+            { 
+                id: 'pwn', 
+                image: 'DVEE6368.JPG', 
+                title: 'Pwnagotchi Slim', 
+                desc: 'Custom-built WiFi auditing companion with integrated hardware.' 
+            },
+            { 
+                id: 'rocket', 
+                image: 'DVEE6368.JPG', 
+                title: 'Rocketry Challenge', 
+                desc: 'Aerospace simulation and construction for high-altitude flight.' 
+            },
+            { 
+                id: 'plane', 
+                image: 'DVEE6368.JPG', 
+                title: '3D Printed Aircraft', 
+                desc: 'Testing the limits of lightweight airframe manufacturing.' 
+            }
+            // To add a new project, just copy a block above and paste it here!
         ];
 
-        const container = document.getElementById('carousel-target');
-        let currentIndex = 0;
+        // ==========================================
+        // LOGIC: GENERATING THE PAGE
+        // ==========================================
+        const carousel = document.getElementById('carousel-target');
+        const tileTarget = document.getElementById('tile-target');
 
-        // Automatically create the HTML for each image
-        projectImages.forEach((imgObj, index) => {
-            const div = document.createElement('div');
-            div.className = 'carousel-item';
-            div.innerHTML = `
-                <img src="images/${imgObj.file}" class="w-full h-full object-cover">
-                <div class="absolute bottom-0 bg-blue-900/90 text-white p-3 w-full text-center text-sm font-bold">
-                    ${imgObj.title}
-                </div>
-            `;
-            container.appendChild(div);
+        myProjects.forEach((p, index) => {
+            // Build Carousel
+            const cDiv = document.createElement('div');
+            cDiv.className = 'carousel-item';
+            cDiv.innerHTML = `
+                <img src="images/${p.image}" class="w-full h-full object-cover">
+                <div class="absolute bottom-0 w-full bg-blue-900/80 text-white text-[10px] p-2 text-center font-bold uppercase">
+                    ${p.title}
+                </div>`;
+            carousel.appendChild(cDiv);
+
+            // Build Vertical Tiles
+            const tDiv = document.createElement('a');
+            tDiv.href = `project-detail.html?id=${p.id}`; // Links to a detail page
+            tDiv.className = "project-tile flex flex-col md:flex-row items-center bg-white/70 backdrop-blur-sm p-6 rounded-3xl shadow-lg transition-all border-2 border-white overflow-hidden";
+            tDiv.innerHTML = `
+                <img src="images/${p.image}" class="w-full md:w-48 h-32 object-cover rounded-2xl mb-4 md:mb-0 md:mr-8 shadow-md">
+                <div>
+                    <h3 class="text-2xl font-black text-blue-900">${p.title}</h3>
+                    <p class="text-blue-800/70 font-medium mt-1">${p.desc}</p>
+                    <span class="inline-block mt-4 text-xs font-black uppercase text-blue-500 tracking-widest">View Mission Log →</span>
+                </div>`;
+            tileTarget.appendChild(tDiv);
         });
 
+        // ==========================================
+        // ANIMATION: AUTO-SCROLL CAROUSEL
+        // ==========================================
+        let currentIndex = 0;
         const items = document.querySelectorAll('.carousel-item');
 
-        function updateDisplay() {
+        function updateCarousel() {
             items.forEach((item, i) => {
-                item.className = 'carousel-item'; // Reset classes
-                
-                if (i === currentIndex) {
-                    item.classList.add('item-active');
-                } else if (i === (currentIndex - 1 + items.length) % items.length) {
-                    item.classList.add('item-prev');
-                } else if (i === (currentIndex + 1) % items.length) {
-                    item.classList.add('item-next');
-                }
+                item.className = 'carousel-item';
+                if (i === currentIndex) item.classList.add('item-active');
+                else if (i === (currentIndex - 1 + items.length) % items.length) item.classList.add('item-prev');
+                else if (i === (currentIndex + 1) % items.length) item.classList.add('item-next');
             });
+            currentIndex = (currentIndex + 1) % items.length;
         }
 
-        function rotateCarousel(direction) {
-            currentIndex = (currentIndex + direction + items.length) % items.length;
-            updateDisplay();
+        if(items.length > 0) {
+            updateCarousel();
+            setInterval(updateCarousel, 3000);
         }
-
-        // Initialize the first view
-        updateDisplay();
     </script>
+
 </body>
 </html>
