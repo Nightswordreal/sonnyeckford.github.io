@@ -47,7 +47,7 @@
         .bird-wing {
             width: 25px;
             height: 15px;
-            border: 4px solid #1e3a8a; /* Bold blue lines */
+            border: 4px solid #1e3a8a;
             border-bottom: none;
             border-left: none;
             border-right: none;
@@ -84,13 +84,61 @@
             filter: blur(12px);
             opacity: 0.6;
         }
+
+        /* --- THE GLOBE STYLES --- */
+        .globe-container {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #3b82f6; /* Water */
+            position: relative;
+            overflow: hidden;
+            border: 6px solid white;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        .globe-container:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .land-mass {
+            position: absolute;
+            top: 40%;
+            left: 20%;
+            width: 140px;
+            height: 90px;
+            background: #22c55e; /* Green Land */
+            border-radius: 40% 60% 50% 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-10deg);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .tree {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+        }
     </style>
 </head>
 <body class="font-sans text-blue-900">
 
     <nav id="cloud-nav" class="fixed top-0 w-full z-50 p-5 shadow-lg">
         <div class="max-w-4xl mx-auto flex justify-between items-center px-6">
-            <span class="font-black text-blue-600 text-xl tracking-tighter">SONNY.SYS</span>
+            <span class="font-black text-blue-600 text-xl tracking-tighter italic">SONNY.SYS</span>
             <div class="flex space-x-10 font-bold uppercase text-xs tracking-widest text-blue-800">
                 <a href="index.html" class="text-blue-500 border-b-2 border-blue-500">Start</a>
                 <a href="projects.html" class="hover:text-blue-500">Projects</a>
@@ -105,49 +153,58 @@
         </div>
 
         <div class="z-20 mt-6">
-            <h1 class="text-7xl font-black text-white drop-shadow-lg tracking-tighter">SONNY</h1>
+            <h1 class="text-7xl font-black text-white drop-shadow-lg tracking-tighter italic">SONNY</h1>
             <p class="text-xl font-bold text-blue-900/60 uppercase tracking-widest">Engineering & Design</p>
         </div>
 
         <div class="sky-element top-1/4 left-10 bird-flap">
-            <div class="bird-container">
-                <div class="bird-wing"></div>
-                <div class="bird-wing wing-right"></div>
-            </div>
+            <div class="bird-container"><div class="bird-wing"></div><div class="bird-wing wing-right"></div></div>
         </div>
-
         <div class="sky-element top-1/3 right-20 bird-flap" style="animation-delay: 1.5s">
-            <div class="bird-container">
-                <div class="bird-wing"></div>
-                <div class="bird-wing wing-right"></div>
-            </div>
+            <div class="bird-container"><div class="bird-wing"></div><div class="bird-wing wing-right"></div></div>
         </div>
     </header>
 
     <section class="relative">
         <div class="sky-element top-20 right-10 cloud-shape w-64 h-20"></div>
         <div class="sky-element top-80 left-10 cloud-shape w-80 h-24"></div>
-        
-        <div class="sky-element top-[400px] left-20 bird-flap" style="animation-delay: 0.8s">
-            <div class="bird-container">
-                <div class="bird-wing"></div>
-                <div class="bird-wing wing-right"></div>
-            </div>
-        </div>
 
-        <main class="max-w-3xl mx-auto py-32 px-6 relative z-20">
-            <div class="bg-white/40 backdrop-blur-md p-12 rounded-[40px] shadow-2xl border border-white/50">
+        <main class="max-w-4xl mx-auto py-32 px-6 relative z-20 flex flex-col items-center gap-20">
+            
+            <div class="bg-white/40 backdrop-blur-md p-12 rounded-[40px] shadow-2xl border border-white/50 w-full">
                 <h2 class="text-4xl font-black mb-8 text-blue-900 italic">"The Sky is the Limit."</h2>
                 <p class="text-xl leading-relaxed font-medium text-blue-800/90">
                     I build things that fly, things that help, and things that code. 
                     From high-altitude rocketry to custom bio-prosthetics, my work is driven by curiosity 
                     and the desire to make the complex accessible.
                 </p>
-                <div class="mt-10 pt-10 border-t border-blue-200 flex justify-between items-center">
+                <div class="mt-10 pt-10 border-t border-blue-200 flex flex-wrap gap-6 justify-between items-center">
                     <p class="font-bold text-blue-900 leading-none">Aerospace & Robotics</p>
-                    <a href="projects.html" class="bg-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-blue-500 transition-all">View All Work</a>
+                    <div class="flex gap-4">
+                        <a href="assets/sonny_cv.pdf" download class="border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition-all flex items-center gap-2">
+                            <span>Download CV</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </a>
+                        <a href="projects.html" class="bg-blue-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-blue-500 transition-all">View All Work</a>
+                    </div>
                 </div>
             </div>
+
+            <a href="projects.html" class="group">
+                <div class="globe-container">
+                    <div class="land-mass">
+                        <div class="tree">
+                            <svg viewBox="0 0 100 100" fill="#064e3b">
+                                <path d="M50 10 L80 60 L65 60 L85 90 L15 90 L35 60 L20 60 Z" />
+                                <rect x="45" y="90" width="10" height="10" fill="#451a03" />
+                            </svg>
+                        </div>
+                        <span class="text-white font-black uppercase text-xl tracking-tighter">Projects</span>
+                    </div>
+                </div>
+                <p class="text-center mt-6 font-black text-blue-900/40 uppercase tracking-widest text-sm group-hover:text-blue-600 transition-colors">Tap the world to explore</p>
+            </a>
+
         </main>
     </section>
 
