@@ -3,29 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Detail | Sonny's Skyward</title>
+    <title>3D Printed RC Plane | Sonny's Skyward</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { 
             background: linear-gradient(to bottom, #87CEEB 0%, #BAE6FD 50%, #E0F2FE 100%);
             min-height: 100vh; overflow-x: hidden;
         }
-
-        /* Consistent "Glassmorphism" effect */
         .glass-panel {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(15px);
             border: 2px solid white;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-
-        /* For the side-image flow */
-        .img-block {
-            transition: transform 0.3s ease;
-        }
-        .img-block:hover { transform: translateY(-5px); }
-
-        /* M Bird styles for consistency */
+        /* Hidden Scrollbar for the galleries */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
         .bird-wing { width: 20px; height: 10px; border: 3px solid #1e3a8a; border-bottom: none; border-left: none; border-right: none; border-radius: 50% 50% 0 0; }
         .wing-right { transform: rotate(15deg) scaleX(-1); margin-left: -4px; }
         .wing-left { transform: rotate(-15deg); }
@@ -33,122 +27,109 @@
 </head>
 <body class="text-blue-900 font-sans pb-20 relative">
 
-    <div class="absolute -left-10 top-20 opacity-30 flex"><div class="bird-wing wing-left"></div><div class="bird-wing wing-right"></div></div>
-    <div class="absolute -right-10 top-[600px] opacity-30 flex"><div class="bird-wing wing-left"></div><div class="bird-wing wing-right"></div></div>
-
     <nav class="sticky top-0 z-50 p-6 bg-white/80 backdrop-blur-md shadow-sm">
         <div class="max-w-6xl mx-auto flex justify-between items-center px-6">
-            <span class="font-black text-blue-500 text-xl tracking-tighter">SONNY.SYS</span>
+            <span class="font-black text-blue-500 text-xl tracking-tighter italic">SONNY.SYS</span>
             <div class="flex space-x-12 font-bold uppercase text-xs tracking-widest text-blue-800">
                 <a href="index.html" class="hover:text-blue-500">Home</a>
-                <a href="projects.html" class="text-blue-600 border-b-2 border-blue-600">Back to Projects</a>
-                <a href="blank.html" class="hover:text-blue-500">Blank</a>
+                <a href="projects.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Back to Projects</a>
             </div>
         </div>
     </nav>
 
-    <header class="text-center py-20 px-6">
-        <h1 id="p-title" class="text-6xl font-black text-white drop-shadow-md mb-4 uppercase tracking-tighter italic">Loading...</h1>
-        <p id="p-subtitle" class="text-2xl font-bold text-blue-800/80 uppercase tracking-widest">Engineering Journal</p>
+    <header class="text-center py-16 px-6">
+        <h1 class="text-6xl font-black text-white drop-shadow-md mb-4 uppercase tracking-tighter italic">3D Printed RC Plane</h1>
+        <p class="text-xl font-bold text-blue-800/80 uppercase tracking-widest">Aerospace Engineering & Fabrication</p>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 space-y-16">
+    <main class="max-w-6xl mx-auto px-6 space-y-12">
         
-        <section id="p-intro" class="glass-panel p-12 rounded-[40px] text-center max-w-4xl mx-auto">
-            <h2 class="text-3xl font-black mb-6 uppercase tracking-tight text-blue-950">Mission Objective</h2>
-            <p id="p-intro-text" class="text-xl leading-relaxed text-blue-900/90 font-medium"></p>
-        </div>
+        <section class="glass-panel p-10 rounded-[40px]">
+            <h2 class="text-2xl font-black mb-4 uppercase text-blue-950 italic">Introduction</h2>
+            <p id="intro-text" class="text-lg leading-relaxed text-blue-900/90 font-medium"></p>
+        </section>
 
-        <div id="journey-target" class="space-y-20">
-            </div>
+        <section class="glass-panel p-8 rounded-[40px] border-l-8 border-blue-600 max-w-4xl mx-auto">
+            <h2 class="text-2xl font-black mb-6 uppercase text-blue-950 italic">Materials & Tools</h2>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg font-bold text-blue-800" id="materials-list"></ul>
+        </section>
 
-        <section id="p-conclusion" class="glass-panel p-12 rounded-[40px] text-center max-w-4xl mx-auto mt-20">
-            <h2 class="text-3xl font-black mb-6 uppercase tracking-tight text-blue-950">Mission Summary</h2>
-            <p id="p-con-text" class="text-xl leading-relaxed text-blue-900/90 font-medium"></p>
-        </div>
+        <div id="steps-container" class="space-y-16"></div>
+
+        <div id="conclusion-target" class="mt-20"></div>
 
     </main>
 
     <script>
-        // === PROJECT DATABASE (Updated structure) ===
+        // ==========================================
+        // SINGLE DATA OBJECT: EDIT EVERYTHING HERE
+        // ==========================================
         const projectData = {
-            'uganda': {
-                title: 'Uganda Prosthetics',
-                subtitle: 'Biomedical Engineering',
-                intro: 'Create a non-medical prosthetic device that is simple, durable, and repairable using basic FDM 3D printing in resource-limited environments.',
-                steps: [
-                    { image: 'images/uganda-cad.png', text: 'Step 1: Onshape Modeling. Designing a modular socket and grip that is parametric, allowing rapid resizing based on patient scan data.' },
-                    { image: 'images/uganda-test.jpg', text: 'Step 2: Material Testing. PLA+ stress tests to ensure the wrist-joint mechanism can sustain daily-utility weight-loading of 5kg without catastrophic failure.' },
-                    { image: 'images/uganda-field.jpg', text: 'Step 3: Iteration in the Field. Modifying the grip geometry after feedback to provide better leverage for picking up agricultural tools.' }
-                ],
-                conclusion: 'Developed a durable, parameter-driven prosthetic system that provides functional utility and can be manufactured locally, reducing reliance on expensive imports.'
-            },
-            'pwn': {
-                title: 'Pwnagotchi Slim',
-                subtitle: 'Cybersecurity & Hardware',
-                intro: 'Develop a highly portable, unified enclosure for the Pwnagotchi project, integrating an e-ink display and a high-capacity battery while maximizing stealth.',
-                steps: [
-                    { image: 'images/pwn-soldering.jpg', text: 'Step 1: Soldering the Pi Zero W. Precision header modification to minimize height and connect the Waveshare e-ink display directly to the GPIO pins.' },
-                    { image: 'images/pwn-cad.png', text: 'Step 2: Custom Enclosure CAD. Designing a slip-fit 3D case that aligns the e-ink display with the battery pack and uses passive cooling vents.' },
-                    { image: 'images/pwn-active.gif', text: 'Step 3: Linux Configuration. Building the image and tuning the AI "personality" on Raspbian to optimize WiFi packet capture and battery efficiency.' }
-                ],
-                conclusion: 'Successfully integrated the Pwnagotchi hardware into a slim, pocketable enclosure. The project provided critical skills in advanced soldering, thermal management in compact spaces, and Linux automation.'
-            },
-            'rocket': {
-                title: 'American Rocketry Challenge',
-                subtitle: 'Aerospace & Math',
-                intro: 'Lead a student team to design, simulate, build, and launch a reliable, stable rocket to achieve a target altitude of 800 feet and a specific duration window.',
-                steps: [
-                    { image: 'images/rocket-openrocket.png', text: 'Step 1: OpenRocket Simulations. Iterating on the fin geometry and CG/CP separation to ensure stability during supersonic ascent.' },
-                    { image: 'images/rocket-assembly.jpg', text: 'Step 2: Manufacturing. Laser-cutting balsa fins and utilizing composite materials to maximize structure strength-to-weight ratio.' },
-                    { image: 'images/rocket-launch.mp4', text: 'Step 3: Mission Day. Executing the flight checklist and achieving a stable apogee. The challenge was adjusting ballast for local weather conditions.' }
-                ],
-                conclusion: 'Achieved a successful, stable flight profile. This project verified our calculus-based simulations and taught us high-pressure team project management.'
-            }
+            intro: "I built and flew the Q-Trainer, a specialized 3D-printed radio-controlled plane from PrintLab. The goal was to move from digital design to a fully functional aircraft while managing the complex weight and balance requirements necessary for flight.",
+            
+            materials: [
+                "Airframe: Lightweight PLA (LW-PLA)",
+                "Reinforcement: Carbon fiber spars",
+                "Electronics: Brushless Motor, ESC, & Servos",
+                "Control: RC Transmitter & Receiver",
+                "Tools: 3D Printer & Soldering Iron"
+            ],
+
+            phases: [
+                {
+                    title: "Development and Assembly",
+                    // Add your build photos to this array
+                    gallery: ["posterplane.heic", "insidePlane.HEIC", "CloseupPlane.HEIC", "PlaneParts.jpg"], 
+                    text: "To make the plane flight-capable, I used Lightweight PLA (LW-PLA), which foams during printing to reduce weight while maintaining strength. I had to carefully calibrate the 3D printer’s flow rate and temperature to handle the thin-wall structures and ensure the parts fused perfectly. After printing the interlocking fuselage and wing sections, I reinforced the airframe with carbon fiber spars and installed the electronics, which involved soldering the motor and ESC connections and routing servo wires through the hollow body. I finished by balancing the center of gravity and calibrating the control surfaces to ensure a stable and successful maiden flight."
+                }
+            ],
+
+            conclusion: "This project proved I could handle a high-stakes engineering build from start to finish. I gained experience in aerodynamics, advanced 3D printing techniques, and electronics integration. By successfully flying a plane I built from scratch, I demonstrated the ability to solve technical problems like weight management and mechanical calibration in a real-world application."
         };
 
-        // LOAD DATA BASED ON URL
-        const params = new URLSearchParams(window.location.search);
-        const projectID = params.get('id');
-        const data = projectData[projectID];
+        // ==========================================
+        // RENDER LOGIC (DO NOT EDIT BELOW)
+        // ==========================================
 
-        const target = document.getElementById('journey-target');
+        document.getElementById('intro-text').innerText = projectData.intro;
 
-        if (data) {
-            document.title = `${data.title} | Sonny's Skyward`;
-            document.getElementById('p-title').innerText = data.title;
-            document.getElementById('p-subtitle').innerText = data.subtitle;
-            document.getElementById('p-intro-text').innerText = data.intro;
-            document.getElementById('p-con-text').innerText = data.conclusion;
-            
-            // DYNAMICALLY BUILD THE SECTIONS
-            data.steps.forEach((step, index) => {
-                const section = document.createElement('section');
-                
-                // Set alternate grid layout (image left, then image right)
-                const layoutClass = (index % 2 === 0) ? 'md:grid-cols-5' : 'md:grid-cols-5 md:grid-flow-col-dense';
-                section.className = `grid md:gap-12 items-center text-center ${layoutClass}`;
-                
-                const imgBlock = document.createElement('div');
-                imgBlock.className = 'img-block md:col-span-2 glass-panel p-4 rounded-3xl';
-                imgBlock.innerHTML = `<img src="${step.image}" alt="Step ${index+1}" class="w-full h-80 object-cover rounded-xl shadow-lg border-2 border-white">`;
+        const matTarget = document.getElementById('materials-list');
+        projectData.materials.forEach(m => {
+            const li = document.createElement('li');
+            li.className = "flex items-start";
+            li.innerHTML = `<span class="mr-3">${m.substring(0, 2)}</span><span>${m.substring(2)}</span>`;
+            matTarget.appendChild(li);
+        });
 
-                const textBlock = document.createElement('div');
-                textBlock.className = 'md:col-span-3 text-left glass-panel p-10 rounded-[30px] self-start mt-10 md:mt-0';
-                textBlock.innerHTML = `<p class="text-blue-600 font-bold text-xs mb-2 uppercase tracking-widest">Phase ${index+1}</p><p class="text-lg leading-relaxed text-blue-900/80">${step.text}</p>`;
+        const container = document.getElementById('steps-container');
+        projectData.phases.forEach((step, index) => {
+            const section = document.createElement('section');
+            // Even though there's only one step, this logic keeps it formatted correctly (Image Left, Text Right)
+            const isEven = index % 2 === 0;
+            section.className = `flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-10`;
 
-                // If index is odd, swap elements
-                if (index % 2 !== 0) {
-                    section.appendChild(textBlock);
-                    section.appendChild(imgBlock);
-                } else {
-                    section.appendChild(imgBlock);
-                    section.appendChild(textBlock);
-                }
-                
-                target.appendChild(section);
+            let imageHTML = `<div class="flex gap-4 overflow-x-auto hide-scroll p-2 snap-x">`;
+            step.gallery.forEach(img => {
+                imageHTML += `<div class="min-w-full snap-center"><img src="images/${img}" class="w-full h-80 object-cover rounded-2xl shadow-md border border-white"></div>`;
             });
-        }
+            imageHTML += `</div><p class="text-center text-[10px] font-bold uppercase text-blue-400 mt-2">← Swipe Gallery →</p>`;
+
+            section.innerHTML = `
+                <div class="w-full md:w-1/2 glass-panel p-4 rounded-3xl overflow-hidden">${imageHTML}</div>
+                <div class="w-full md:w-1/2 glass-panel p-8 rounded-[30px]">
+                    <p class="text-blue-500 font-black text-xs uppercase mb-2 tracking-widest">Phase 0${index + 1}</p>
+                    <h3 class="text-2xl font-black text-blue-900 mb-4 italic uppercase tracking-tighter">${step.title}</h3>
+                    <p class="text-lg leading-relaxed font-medium text-blue-900/80">${step.text}</p>
+                </div>`;
+            container.appendChild(section);
+        });
+
+        const conclusionTarget = document.getElementById('conclusion-target');
+        conclusionTarget.innerHTML = `
+            <section class="glass-panel p-10 rounded-[40px] text-center max-w-4xl mx-auto mb-20">
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tight text-blue-950 italic">Mission Summary</h2>
+                <p class="text-xl leading-relaxed text-blue-900/90 font-medium italic">"${projectData.conclusion}"</p>
+            </section>`;
     </script>
 </body>
 </html>
