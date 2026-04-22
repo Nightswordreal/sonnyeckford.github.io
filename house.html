@@ -1,6 +1,144 @@
-{ 
-                id: 'plane', 
-                image: 'posterplane.heic', 
-                title: '3D Printed RC Plane', 
-                desc: 'Testing aerodynamic limits and weight-to-power ratios in fully 3D printed airframes.' 
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Design | Sonny's Skyward</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            background: linear-gradient(to bottom, #87CEEB 0%, #BAE6FD 50%, #E0F2FE 100%);
+            min-height: 100vh; overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            border: 2px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        /* Hidden Scrollbar for the galleries */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .bird-wing { width: 20px; height: 10px; border: 3px solid #1e3a8a; border-bottom: none; border-left: none; border-right: none; border-radius: 50% 50% 0 0; }
+        .wing-right { transform: rotate(15deg) scaleX(-1); margin-left: -4px; }
+        .wing-left { transform: rotate(-15deg); }
+    </style>
+</head>
+<body class="text-blue-900 font-sans pb-20 relative">
+
+    <nav class="sticky top-0 z-50 p-6 bg-white/80 backdrop-blur-md shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center px-6">
+            <span class="font-black text-blue-500 text-xl tracking-tighter italic">SONNY.SYS</span>
+            <div class="flex space-x-12 font-bold uppercase text-xs tracking-widest text-blue-800">
+                <a href="index.html" class="hover:text-blue-500">Home</a>
+                <a href="projects.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Back to Projects</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="text-center py-16 px-6">
+        <h1 class="text-6xl font-black text-white drop-shadow-md mb-4 uppercase tracking-tighter italic">House Design</h1>
+        <p class="text-xl font-bold text-blue-800/80 uppercase tracking-widest">Aerospace Engineering & Fabrication</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 space-y-12">
+        
+        <section class="glass-panel p-10 rounded-[40px]">
+            <h2 class="text-2xl font-black mb-4 uppercase text-blue-950 italic">Introduction</h2>
+            <p id="intro-text" class="text-lg leading-relaxed text-blue-900/90 font-medium"></p>
+        </section>
+
+        <section class="glass-panel p-8 rounded-[40px] border-l-8 border-blue-600 max-w-4xl mx-auto">
+            <h2 class="text-2xl font-black mb-6 uppercase text-blue-950 italic">Materials & Tools</h2>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg font-bold text-blue-800" id="materials-list"></ul>
+        </section>
+
+        <div id="steps-container" class="space-y-16"></div>
+
+        <div id="conclusion-target" class="mt-20"></div>
+
+    </main>
+
+    <script>
+        // ==========================================
+        // SINGLE DATA OBJECT: EDIT EVERYTHING HERE
+        // ==========================================
+        const projectData = {
+            intro: "The project involves the design of an affordable housing unit in Noblesville, IN, aimed at providing a cost-effective and sustainable living solution for homeowners. It encompasses a comprehensive overview of the site and proposed project, addressing key criteria and constraints such as Habitat for Humanity requirements, climate considerations, and thermal envelope specifications. The design integrates universal accessibility features and green building practices, ensuring that the home is not only affordable to build and maintain but also adaptable to the needs of its occupants.",
+            
+            materials: [
+                "Revit Online Program",
+                "Engineering Notbook",
+            ],
+
+            phases: [
+                {
+                    title: "Design Development & Floor Plans",
+                    // Add your build photos to this array
+                    gallery: ["posterplane.png", "insidePlane.HEIC", "CloseupPlane.HEIC", "PlaneParts.jpg"], 
+                    text: "The project began with a focus on conceptualizing a functional living space through iterative design, starting with bubble diagrams and rough sketches to explore spatial flow. These ideas were refined into a final floor plan sketch and a detailed digital floor plan that emphasizes open transitions and efficient room layouts. By moving from loose concepts to a finalized layout, I was able to prioritize habitable room areas and ensure the architecture met the specific lifestyle needs of the occupants."
+                },
+               {
+                    title: "Technical Drawings & Specifications",
+                    // Add your build photos to this array
+                    gallery: ["posterplane.png", "insidePlane.HEIC", "CloseupPlane.HEIC", "PlaneParts.jpg"], 
+                    text: "To transition from a concept to a buildable structure, I developed a comprehensive set of technical drawings, including elevations, site plans, and a detailed wall section including the foundation. This phase integrated critical functional systems such as electrical and plumbing plans, alongside a window and door schedule for construction accuracy. I also incorporated universal design features and ensured strict compliance with building codes—specifically focusing on ventilation, glazing requirements, and emergency egress—to guarantee the home is safe, accessible, and energy-efficient."
+                },
+               {
+                    title: "Analysis, Renderings & Documentation",
+                    // Add your build photos to this array
+                    gallery: ["posterplane.png", "insidePlane.HEIC", "CloseupPlane.HEIC", "PlaneParts.jpg"], 
+                    text: "The final phase of the project centered on validating the design through rigorous engineering calculations and visual representation. I performed detailed wastewater, storm water runoff, and water supply calculations to ensure the site’s infrastructure could support the structure sustainably. These technical audits were paired with high-quality renderings that illustrate the building's aesthetic and its relationship to the site environment. Together with the appendices, this section provides the analytical proof and visual clarity needed to support the entire architectural proposal."
+                }
+            ],
+
+            conclusion: "This project proved I could handle a high-stakes engineering build from start to finish. I gained experience in aerodynamics, advanced 3D printing techniques, and electronics integration. By successfully flying a plane I built from scratch, I demonstrated the ability to solve technical problems like weight management and mechanical calibration in a real-world application."
+        };
+
+        // ==========================================
+        // RENDER LOGIC (DO NOT EDIT BELOW)
+        // ==========================================
+
+        document.getElementById('intro-text').innerText = projectData.intro;
+
+        const matTarget = document.getElementById('materials-list');
+        projectData.materials.forEach(m => {
+            const li = document.createElement('li');
+            li.className = "flex items-start";
+            li.innerHTML = m;
+            matTarget.appendChild(li);
+        });
+
+        const container = document.getElementById('steps-container');
+        projectData.phases.forEach((step, index) => {
+            const section = document.createElement('section');
+            // Even though there's only one step, this logic keeps it formatted correctly (Image Left, Text Right)
+            const isEven = index % 2 === 0;
+            section.className = `flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-10`;
+
+            let imageHTML = `<div class="flex gap-4 overflow-x-auto hide-scroll p-2 snap-x">`;
+            step.gallery.forEach(img => {
+                imageHTML += `<div class="min-w-full snap-center"><img src="images/${img}" class="w-full h-80 object-cover rounded-2xl shadow-md border border-white"></div>`;
+            });
+            imageHTML += `</div><p class="text-center text-[10px] font-bold uppercase text-blue-400 mt-2">← Swipe Gallery →</p>`;
+
+            section.innerHTML = `
+                <div class="w-full md:w-1/2 glass-panel p-4 rounded-3xl overflow-hidden">${imageHTML}</div>
+                <div class="w-full md:w-1/2 glass-panel p-8 rounded-[30px]">
+                    <p class="text-blue-500 font-black text-xs uppercase mb-2 tracking-widest">Phase 0${index + 1}</p>
+                    <h3 class="text-2xl font-black text-blue-900 mb-4 italic uppercase tracking-tighter">${step.title}</h3>
+                    <p class="text-lg leading-relaxed font-medium text-blue-900/80">${step.text}</p>
+                </div>`;
+            container.appendChild(section);
+        });
+
+        const conclusionTarget = document.getElementById('conclusion-target');
+        conclusionTarget.innerHTML = `
+            <section class="glass-panel p-10 rounded-[40px] text-center max-w-4xl mx-auto mb-20">
+                <h2 class="text-3xl font-black mb-6 uppercase tracking-tight text-blue-950 italic">Project Summary</h2>
+                <p class="text-xl leading-relaxed text-blue-900/90 font-medium italic">"${projectData.conclusion}"</p>
+            </section>`;
+    </script>
+</body>
+</html>
