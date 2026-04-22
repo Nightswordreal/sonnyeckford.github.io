@@ -8,7 +8,7 @@
     <style>
         body { 
             background: linear-gradient(to bottom, #87CEEB 0%, #BAE6FD 50%, #E0F2FE 100%);
-            min-height: 220vh; /* Slightly taller to make the bottom scroll feel distinct */
+            min-height: 200vh;
             overflow-x: hidden;
         }
 
@@ -16,46 +16,20 @@
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* --- SHARED TAB BAR STYLING --- */
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
-            z-index: 50;
-        }
-
         #cloud-nav {
+            transition: transform 0.4s ease, opacity 0.4s ease;
             transform: translateY(-100%);
             opacity: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
             border-radius: 0 0 40px 40px;
         }
 
-        /* --- CARTOON CLOUD BOTTOM BAR --- */
-        #bottom-cloud {
-            transform: translateY(100%);
-            opacity: 0;
-            border-radius: 40px 40px 0 0;
-            border-top: 2px solid rgba(255, 255, 255, 0.5);
-        }
+        .nav-visible { transform: translateY(0) !important; opacity: 1 !important; }
+        .sun-hidden { transform: scale(0) translateY(-200px); opacity: 0; }
 
-        /* Bumpy Cloud Edges for the Bottom Bar */
-     /* Bumpy Cloud Edges for the Bottom Bar */
-        #bottom-cloud::before {
-            content: '';
-            position: absolute;
-            top: -40px; /* Moved up more to account for bigger circles */
-            left: 0;
-            width: 100%;
-            height: 50px;
-            /* Creates a repeating pattern of circles with no gaps */
-            background-image: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.85) 40px, transparent 41px);
-            background-size: 80px 50px; /* Controls the width of each bump */
-            background-repeat: repeat-x;
-            filter: blur(1px);
-        }
-
-        /* --- GLOBE & ISLANDS --- */
- .island {
+        /* --- IRREGULAR ISLANDS --- */
+        .island {
             position: absolute;
             background: #22c55e;
             transition: background 0.3s ease;
@@ -110,65 +84,116 @@
             width: 55px;
             height: 55px;
         }
+
+        /* --- CARTOON CLOUD BAR --- */
+        .cloud-bar {
+            background: white;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+            transform: translateY(100%);
+            opacity: 0;
+            padding-top: 40px; /* Space for the bumps */
+        }
+
+        /* The "Circle Bumps" */
+        .cloud-bar::before, .cloud-bar::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud-bar::before {
+            width: 120px; height: 80px;
+            left: 10%;
+            box-shadow: 150px -10px 0 white, 300px 5px 0 white, 450px -15px 0 white, 600px 0 0 white, 750px -5px 0 white, 900px -10px 0 white;
+        }
+
+        .bar-visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .fluffy-popup {
+            background: white;
+            border-radius: 60px;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 1), 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 8px solid white;
+        }
     </style>
 </head>
 <body class="font-sans text-blue-900">
 
-    <nav id="cloud-nav" class="glass-nav fixed top-0 w-full p-5 shadow-lg">
+    <nav id="cloud-nav" class="fixed top-0 w-full z-50 p-5 shadow-lg">
         <div class="max-w-5xl mx-auto flex justify-between items-center px-6">
-            <span class="font-black text-blue-600 text-xl italic">SONNY.SYS</span>
+            <span class="font-black text-blue-600 text-xl tracking-tighter italic">SONNY.SYS</span>
             <div class="flex items-center space-x-10 font-bold uppercase text-xs tracking-widest text-blue-800">
                 <a href="index.html" class="text-blue-500 border-b-2 border-blue-500">Start</a>
                 <a href="projects.html" class="hover:text-blue-500">Projects</a>
-                <a href="assets/sonny_cv.pdf" download class="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-500 transition-all shadow-md">CV</a>
+                <a href="assets/sonny_cv.pdf" download class="bg-blue-600 text-white px-5 py-2 rounded-full flex items-center gap-2 hover:bg-blue-500 transition-all shadow-md">
+                    <span>Download CV</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
             </div>
         </div>
     </nav>
 
     <header class="relative h-screen flex flex-col items-center justify-center text-center">
-        <img id="sun-logo" src="images/sun.png" alt="Sonny" class="w-64 h-64 md:w-80 md:h-80 drop-shadow-2xl">
+        <div id="sun-container" class="z-20">
+            <img id="sun-logo" src="images/sun.png" alt="Sonny" class="w-64 h-64 md:w-80 md:h-80 drop-shadow-2xl">
+        </div>
+
         <div class="z-20 mt-6">
-            <h1 class="text-8xl font-black text-white drop-shadow-lg italic">SONNY</h1>
+            <h1 class="text-8xl font-black text-white drop-shadow-lg tracking-tighter italic">SONNY</h1>
             <p class="text-2xl font-bold text-blue-900/60 uppercase tracking-widest">Engineering & Design</p>
         </div>
     </header>
 
-    <section class="relative min-h-screen flex flex-col items-center">
-        <div class="max-w-2xl text-center px-6 -mt-16 mb-20 z-20">
+    <section id="content-section" class="relative min-h-screen flex flex-col items-center">
+        <div class="max-w-2xl text-center px-6 -mt-10 mb-16 z-20">
             <p class="text-xl md:text-2xl font-semibold leading-relaxed text-blue-800/80 italic">
                 Sonny Eckford is a High school senior at Walt Whitman, committed to Drexel for material science and engineering; he is due to graduate with his masters in 2031.
             </p>
         </div>
 
-        <div class="relative z-20">
+        <div id="globe-trigger" class="mt-4 relative z-20">
             <a href="projects.html" class="group flex flex-col items-center">
                 <div class="globe-container">
                     <div class="island island-2"></div>
                     <div class="island island-3"></div>
+                    <div class="island island-4"></div>
+                    <div class="island island-5"></div>
+                    <div class="island island-6"></div>
                     <div class="island island-7"></div>
+                    <div class="island island-8"></div>
+                    
                     <div class="island main-island">
-                        <span class="text-white font-black uppercase text-4xl group-hover:scale-110 transition-transform">Projects</span>
+                        <div class="tree">
+                            <svg viewBox="0 0 100 100" fill="#064e3b">
+                                <path d="M50 10 L80 60 L65 60 L85 90 L15 90 L35 60 L20 60 Z" />
+                                <rect x="45" y="90" width="10" height="10" fill="#451a03" />
+                            </svg>
+                        </div>
+                        <span class="text-white font-black uppercase text-4xl tracking-tighter group-hover:scale-110 transition-transform">Projects</span>
                     </div>
                 </div>
-                <p class="mt-12 font-black text-blue-900/40 uppercase tracking-[0.3em] text-lg">Tap to explore</p>
+                <p class="mt-12 font-black text-blue-900/40 uppercase tracking-[0.3em] text-lg group-hover:text-blue-600 transition-colors">Tap the world to explore</p>
             </a>
         </div>
     </section>
 
-    <footer id="bottom-cloud" class="glass-nav fixed bottom-0 w-full p-6 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
-        <div class="max-w-5xl mx-auto flex justify-center items-center">
-            <button onclick="toggleContact()" class="bg-blue-600 text-white px-12 py-3 rounded-full font-black uppercase tracking-widest shadow-lg hover:scale-110 active:scale-95 transition-all">
-                Get In Touch
-            </button>
-        </div>
+    <footer id="bottom-cloud" class="cloud-bar fixed bottom-0 w-full z-40 p-8 flex justify-center">
+        <button onclick="toggleContact()" class="bg-blue-600 text-white px-12 py-4 rounded-full font-black uppercase tracking-widest shadow-xl hover:scale-110 active:scale-95 transition-all">
+            Contact
+        </button>
     </footer>
 
-    <div id="contact-popup" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-blue-400/20 backdrop-blur-sm p-6">
+    <div id="contact-popup" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-blue-400/20 backdrop-blur-sm p-6">
         <div class="fluffy-popup w-full max-w-md p-10 text-center relative">
             <button onclick="toggleContact()" class="absolute top-6 right-8 text-blue-300 hover:text-blue-600 font-bold text-2xl">&times;</button>
-            <h3 class="text-3xl font-black text-blue-900 italic mb-6">Contact Info</h3>
+            <h3 class="text-3xl font-black text-blue-900 italic mb-6">Let's Connect</h3>
             <div class="space-y-4 text-black font-bold text-lg">
-                <p>Email: <a href="mailto:sonny.eckford@gmail.com" class="text-blue-600 underline">sonny.eckford@gmail.com</a></p>
+                <p>Email: <a href="mailto:sonny.eckford@gmail.com" class="hover:text-blue-600">sonny.eckford@gmail.com</a></p>
                 <p>Phone: 301-828-7290</p>
             </div>
         </div>
@@ -178,14 +203,14 @@
         const sun = document.getElementById('sun-logo');
         const nav = document.getElementById('cloud-nav');
         const bottomCloud = document.getElementById('bottom-cloud');
+        const globeTrigger = document.getElementById('globe-trigger');
         const popup = document.getElementById('contact-popup');
 
         window.addEventListener('scroll', () => {
             const scrollPos = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const fullHeight = document.documentElement.scrollHeight;
+            const globePos = globeTrigger.offsetTop;
 
-            // Header Logic (Scroll down a bit to show top nav)
+            // Header Logic
             if (scrollPos > 120) {
                 sun.classList.add('sun-hidden');
                 nav.classList.add('nav-visible');
@@ -194,12 +219,11 @@
                 nav.classList.remove('nav-visible');
             }
 
-            // Bottom Logic (Only show when at the very bottom)
-            // If we are within 50px of the bottom of the page
-            if ((windowHeight + scrollPos) >= (fullHeight - 50)) {
-                bottomCloud.classList.add('nav-visible');
+            // Bottom Cloud Logic (Appears when near the globe)
+            if (scrollPos > globePos - 200) {
+                bottomCloud.classList.add('bar-visible');
             } else {
-                bottomCloud.classList.remove('nav-visible');
+                bottomCloud.classList.remove('bar-visible');
             }
         });
 
