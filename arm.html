@@ -108,7 +108,7 @@
         projectData.materials.forEach(m => {
             const li = document.createElement('li');
             li.className = "flex items-start";
-            li.innerHTML = `<span class="mr-3">${m.substring(0, 2)}</span><span>${m.substring(2)}</span>`; // Splits emoji for formatting
+            li.innerHTML = m; // Splits emoji for formatting
             matTarget.appendChild(li);
         });
 
