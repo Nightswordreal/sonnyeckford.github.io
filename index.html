@@ -55,7 +55,7 @@
         }
 
         /* --- GLOBE & ISLANDS --- */
-        .island {
+ .island {
             position: absolute;
             background: #22c55e;
             transition: background 0.3s ease;
@@ -63,31 +63,52 @@
 
         .main-island {
             top: 30%; left: 15%;
-            width: 320px; height: 190px;
-            border-radius: 45% 55% 35% 65% / 50% 40% 60% 50%;
+            width: 300px; height: 180px;
+            border-radius: 45% 55% 35% 65% / 50% 40% 60% 50%; /* Organic shape */
+            transform: rotate(-2deg);
             display: flex; align-items: center; justify-content: center;
             z-index: 10;
         }
 
-        .island-2 { top: 10%; right: 10%; width: 120px; height: 80px; opacity: 0.8; border-radius: 60% 40% 70% 30%; }
-        .island-3 { bottom: 15%; right: 18%; width: 140px; height: 100px; opacity: 0.9; border-radius: 30% 70% 50% 50%; }
-        .island-7 { top: 45%; right: 3%; width: 130px; height: 90px; opacity: 0.8; border-radius: 20% 80% 40% 60%; }
+        .island-2 { top: 10%; right: 10%; width: 110px; height: 70px; opacity: 0.8; border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; }
+        .island-3 { bottom: 15%; right: 20%; width: 130px; height: 90px; opacity: 0.9; border-radius: 30% 70% 50% 50% / 40% 40% 60% 60%; }
+        .island-4 { top: 65%; left: 8%; width: 90px; height: 60px; opacity: 0.7; border-radius: 50% 50% 30% 70%; }
+        .island-5 { top: 5%; left: 12%; width: 100px; height: 55px; opacity: 0.6; border-radius: 70% 30% 50% 50%; }
+        .island-6 { bottom: 8%; left: 25%; width: 70px; height: 45px; opacity: 0.5; border-radius: 40% 60% 40% 60%; }
+        .island-7 { top: 45%; right: 3%; width: 120px; height: 80px; opacity: 0.8; border-radius: 20% 80% 40% 60% / 30% 70% 30% 70%; }
+        .island-8 { top: 25%; left: 65%; width: 60px; height: 40px; opacity: 0.7; border-radius: 50%; }
 
+        /* --- THE BIG WORLD GLOBE --- */
         .globe-container {
-            width: 450px; height: 450px;
-            border-radius: 50%; background: #3b82f6;
-            position: relative; overflow: hidden;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: #3b82f6;
+            position: relative;
+            overflow: hidden;
             box-shadow: 0 30px 100px rgba(30, 58, 138, 0.2);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
             animation: float-world 6s infinite ease-in-out;
         }
 
-        @keyframes float-world { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px); } }
+        .globe-container:hover {
+            transform: scale(1.05) rotate(3deg);
+            box-shadow: 0 40px 120px rgba(30, 58, 138, 0.3);
+        }
 
-        .fluffy-popup {
-            background: white;
-            border-radius: 60px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            border: 8px solid white;
+        @keyframes float-world {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .tree {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 55px;
+            height: 55px;
         }
     </style>
 </head>
