@@ -8,7 +8,8 @@
     <style>
         body { 
             background: linear-gradient(to bottom, #87CEEB 0%, #BAE6FD 50%, #E0F2FE 100%);
-            min-height: 220vh;
+            /* Page is now shorter (reduced from 220vh) */
+            min-height: 160vh; 
             overflow-x: hidden;
         }
 
@@ -25,29 +26,16 @@
             border-radius: 0 0 40px 40px;
         }
 
-        /* --- NEW BOTTOM BAR STYLING --- */
+        /* --- BOTTOM BAR STYLING (No Circles) --- */
         #bottom-cloud {
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             opacity: 0;
             transform: translateY(100%);
             border-radius: 40px 40px 0 0;
             z-index: 50;
-        }
-
-        /* Bumpy Cloud Pattern for Bottom Bar */
-        #bottom-cloud::before {
-            content: '';
-            position: absolute;
-            top: -40px; 
-            left: 0;
-            width: 100%;
-            height: 50px;
-            background-image: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.85) 40px, transparent 41px);
-            background-size: 80px 50px; 
-            background-repeat: repeat-x;
-            filter: blur(1px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .nav-visible { transform: translateY(0) !important; opacity: 1 !important; }
@@ -133,7 +121,7 @@
         </div>
     </nav>
 
-    <header class="relative h-screen flex flex-col items-center justify-center text-center">
+    <header class="relative h-[85vh] flex flex-col items-center justify-center text-center">
         <div id="sun-container" class="z-20">
             <img id="sun-logo" src="images/sun.png" alt="Sonny" class="w-64 h-64 md:w-80 md:h-80 drop-shadow-2xl">
         </div>
@@ -144,7 +132,7 @@
         </div>
     </header>
 
-    <section id="content-section" class="relative min-h-screen flex flex-col items-center">
+    <section id="content-section" class="relative min-h-[90vh] flex flex-col items-center">
         <div class="max-w-2xl text-center px-6 -mt-10 mb-16 z-20">
             <p class="text-xl md:text-2xl font-semibold leading-relaxed text-blue-800/80 italic">
                 Sonny Eckford is a High school senior at Walt Whitman, committed to Drexel for material science and engineering; he is due to graduate with his masters in 2031.
@@ -214,8 +202,8 @@
                 nav.classList.remove('nav-visible');
             }
 
-            // Bottom Bar appears only at absolute bottom
-            if ((windowHeight + scrollPos) >= (fullHeight - 50)) {
+            // Bottom Bar logic: adjusted for a tighter page
+            if ((windowHeight + scrollPos) >= (fullHeight - 30)) {
                 bottomCloud.classList.add('nav-visible');
             } else {
                 bottomCloud.classList.remove('nav-visible');
