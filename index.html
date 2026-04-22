@@ -8,7 +8,7 @@
     <style>
         body { 
             background: linear-gradient(to bottom, #87CEEB 0%, #BAE6FD 50%, #E0F2FE 100%);
-            min-height: 250vh;
+            min-height: 200vh;
             overflow-x: hidden;
         }
 
@@ -29,7 +29,7 @@
         .nav-visible { transform: translateY(0) !important; opacity: 1 !important; }
         .sun-hidden { transform: scale(0) translateY(-200px); opacity: 0; }
 
-        /* The "M" Shaped Bird */
+        /* --- FIXED ATTACHED BIRDS --- */
         .sky-element {
             position: absolute;
             pointer-events: none;
@@ -38,44 +38,46 @@
 
         .bird-container {
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
-            width: 50px;
-            height: 20px;
+            width: 60px;
+            height: 30px;
         }
 
         .bird-wing {
-            width: 25px;
-            height: 15px;
-            border: 4px solid #1e3a8a;
-            border-bottom: none;
-            border-left: none;
-            border-right: none;
+            width: 30px;
+            height: 20px;
+            border-top: 4px solid #1e3a8a;
             border-radius: 50% 50% 0 0;
-            transform: rotate(-15deg);
+        }
+
+        .wing-left {
+            transform-origin: bottom right; /* Joins at the bottom-right tip */
+            animation: wing-beat-left 2s infinite ease-in-out;
         }
 
         .wing-right {
-            transform: rotate(15deg) scaleX(-1);
-            margin-left: -4px;
+            transform-origin: bottom left; /* Joins at the bottom-left tip */
+            animation: wing-beat-right 2s infinite ease-in-out;
         }
 
-        .bird-flap {
-            animation: bird-soar 6s infinite ease-in-out;
+        .bird-soar {
+            animation: bird-float 6s infinite ease-in-out;
         }
 
-        .bird-flap .bird-wing {
-            animation: wing-beat 2s infinite ease-in-out;
-        }
-
-        @keyframes bird-soar {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-30px) translateX(15px); }
-        }
-
-        @keyframes wing-beat {
+        @keyframes wing-beat-left {
             0%, 100% { transform: rotate(-15deg); }
-            50% { transform: rotate(-35deg) translateY(5px); }
+            50% { transform: rotate(-45deg); }
+        }
+
+        @keyframes wing-beat-right {
+            0%, 100% { transform: rotate(15deg); }
+            50% { transform: rotate(45deg); }
+        }
+
+        @keyframes bird-float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-30px) translateX(10px); }
         }
 
         .cloud-shape {
@@ -85,64 +87,74 @@
             opacity: 0.6;
         }
 
-        /* --- THE GLOBE STYLES --- */
+        /* --- THE BIG WORLD GLOBE --- */
         .globe-container {
-            width: 200px;
-            height: 200px;
+            width: 450px;
+            height: 450px;
             border-radius: 50%;
-            background: #3b82f6; /* Water */
+            background: #3b82f6; /* Ocean */
             position: relative;
             overflow: hidden;
-            border: 6px solid white;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            transition: all 0.4s ease;
+            box-shadow: 0 30px 100px rgba(30, 58, 138, 0.2);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
-            animation: float 5s infinite ease-in-out;
+            animation: float-world 6s infinite ease-in-out;
         }
 
         .globe-container:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            transform: scale(1.05) rotate(3deg);
+            box-shadow: 0 40px 120px rgba(30, 58, 138, 0.3);
         }
 
-        .land-mass {
+        /* Island System */
+        .island {
             position: absolute;
-            top: 40%;
-            left: 20%;
-            width: 140px;
-            height: 90px;
-            background: #22c55e; /* Green Land */
-            border-radius: 40% 60% 50% 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: rotate(-10deg);
+            background: #22c55e;
+            border-radius: 50%;
+            transition: background 0.3s ease;
         }
 
-        @keyframes float {
+        /* Main Island (Projects) */
+        .main-island {
+            top: 35%; left: 20%;
+            width: 260px; height: 160px;
+            border-radius: 40% 60% 50% 40%;
+            transform: rotate(-5deg);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Decorative Islands */
+        .island-2 { top: 15%; right: 15%; width: 80px; height: 50px; opacity: 0.8; }
+        .island-3 { bottom: 20%; right: 25%; width: 100px; height: 70px; opacity: 0.9; }
+        .island-4 { top: 60%; left: 10%; width: 60px; height: 40px; opacity: 0.7; }
+
+        @keyframes float-world {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-30px); }
         }
 
         .tree {
             position: absolute;
-            top: -30px;
+            top: -35px;
             left: 50%;
             transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
         }
     </style>
 </head>
 <body class="font-sans text-blue-900">
 
     <nav id="cloud-nav" class="fixed top-0 w-full z-50 p-5 shadow-lg">
-        <div class="max-w-4xl mx-auto flex justify-between items-center px-6">
+        <div class="max-w-5xl mx-auto flex justify-between items-center px-6">
             <span class="font-black text-blue-600 text-xl tracking-tighter italic">SONNY.SYS</span>
-            <div class="flex space-x-10 font-bold uppercase text-xs tracking-widest text-blue-800">
+            <div class="flex items-center space-x-10 font-bold uppercase text-xs tracking-widest text-blue-800">
                 <a href="index.html" class="text-blue-500 border-b-2 border-blue-500">Start</a>
                 <a href="projects.html" class="hover:text-blue-500">Projects</a>
-                <a href="blank.html" class="hover:text-blue-500">Blank</a>
+                <a href="assets/sonny_cv.pdf" download class="bg-blue-600 text-white px-5 py-2 rounded-full flex items-center gap-2 hover:bg-blue-500 transition-all shadow-md">
+                    <span>Download CV</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
             </div>
         </div>
     </nav>
@@ -153,59 +165,42 @@
         </div>
 
         <div class="z-20 mt-6">
-            <h1 class="text-7xl font-black text-white drop-shadow-lg tracking-tighter italic">SONNY</h1>
-            <p class="text-xl font-bold text-blue-900/60 uppercase tracking-widest">Engineering & Design</p>
+            <h1 class="text-8xl font-black text-white drop-shadow-lg tracking-tighter italic">SONNY</h1>
+            <p class="text-2xl font-bold text-blue-900/60 uppercase tracking-widest">Engineering & Design</p>
         </div>
 
-        <div class="sky-element top-1/4 left-10 bird-flap">
-            <div class="bird-container"><div class="bird-wing"></div><div class="bird-wing wing-right"></div></div>
+        <div class="sky-element top-1/4 left-10 bird-soar">
+            <div class="bird-container"><div class="bird-wing wing-left"></div><div class="bird-wing wing-right"></div></div>
         </div>
-        <div class="sky-element top-1/3 right-20 bird-flap" style="animation-delay: 1.5s">
-            <div class="bird-container"><div class="bird-wing"></div><div class="bird-wing wing-right"></div></div>
+        <div class="sky-element top-1/3 right-20 bird-soar" style="animation-delay: 1.5s">
+            <div class="bird-container"><div class="bird-wing wing-left"></div><div class="bird-wing wing-right"></div></div>
         </div>
     </header>
 
-    <section class="relative">
-        <div class="sky-element top-20 right-10 cloud-shape w-64 h-20"></div>
-        <div class="sky-element top-80 left-10 cloud-shape w-80 h-24"></div>
+    <section class="relative min-h-screen flex flex-col items-center">
+        <div class="sky-element top-0 right-10 cloud-shape w-64 h-20"></div>
+        <div class="sky-element top-40 left-10 cloud-shape w-80 h-24"></div>
 
-        <main class="max-w-4xl mx-auto py-32 px-6 relative z-20 flex flex-col items-center gap-20">
-            
-            <div class="bg-white/40 backdrop-blur-md p-12 rounded-[40px] shadow-2xl border border-white/50 w-full">
-                <h2 class="text-4xl font-black mb-8 text-blue-900 italic">"The Sky is the Limit."</h2>
-                <p class="text-xl leading-relaxed font-medium text-blue-800/90">
-                    I build things that fly, things that help, and things that code. 
-                    From high-altitude rocketry to custom bio-prosthetics, my work is driven by curiosity 
-                    and the desire to make the complex accessible.
-                </p>
-                <div class="mt-10 pt-10 border-t border-blue-200 flex flex-wrap gap-6 justify-between items-center">
-                    <p class="font-bold text-blue-900 leading-none">Aerospace & Robotics</p>
-                    <div class="flex gap-4">
-                        <a href="assets/sonny_cv.pdf" download class="border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition-all flex items-center gap-2">
-                            <span>Download CV</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        </a>
-                        <a href="projects.html" class="bg-blue-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-blue-500 transition-all">View All Work</a>
-                    </div>
-                </div>
-            </div>
-
-            <a href="projects.html" class="group">
+        <div class="mt-20 relative z-20">
+            <a href="projects.html" class="group flex flex-col items-center">
                 <div class="globe-container">
-                    <div class="land-mass">
+                    <div class="island island-2"></div>
+                    <div class="island island-3"></div>
+                    <div class="island island-4"></div>
+                    
+                    <div class="island main-island">
                         <div class="tree">
                             <svg viewBox="0 0 100 100" fill="#064e3b">
                                 <path d="M50 10 L80 60 L65 60 L85 90 L15 90 L35 60 L20 60 Z" />
                                 <rect x="45" y="90" width="10" height="10" fill="#451a03" />
                             </svg>
                         </div>
-                        <span class="text-white font-black uppercase text-xl tracking-tighter">Projects</span>
+                        <span class="text-white font-black uppercase text-3xl tracking-tighter group-hover:scale-110 transition-transform">Projects</span>
                     </div>
                 </div>
-                <p class="text-center mt-6 font-black text-blue-900/40 uppercase tracking-widest text-sm group-hover:text-blue-600 transition-colors">Tap the world to explore</p>
+                <p class="mt-12 font-black text-blue-900/40 uppercase tracking-[0.3em] text-lg group-hover:text-blue-600 transition-colors">Tap the world to explore</p>
             </a>
-
-        </main>
+        </div>
     </section>
 
     <script>
