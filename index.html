@@ -8,7 +8,7 @@
     <style>
         body { 
             background: linear-gradient(to bottom, #87CEEB 0%, #BAE6FD 50%, #E0F2FE 100%);
-            min-height: 200vh;
+            min-height: 220vh;
             overflow-x: hidden;
         }
 
@@ -25,10 +25,35 @@
             border-radius: 0 0 40px 40px;
         }
 
+        /* --- NEW BOTTOM BAR STYLING --- */
+        #bottom-cloud {
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(100%);
+            border-radius: 40px 40px 0 0;
+            z-index: 50;
+        }
+
+        /* Bumpy Cloud Pattern for Bottom Bar */
+        #bottom-cloud::before {
+            content: '';
+            position: absolute;
+            top: -40px; 
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-image: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.85) 40px, transparent 41px);
+            background-size: 80px 50px; 
+            background-repeat: repeat-x;
+            filter: blur(1px);
+        }
+
         .nav-visible { transform: translateY(0) !important; opacity: 1 !important; }
         .sun-hidden { transform: scale(0) translateY(-200px); opacity: 0; }
 
-        /* --- IRREGULAR ISLANDS --- */
+        /* --- EXACT GLOBE ISLANDS --- */
         .island {
             position: absolute;
             background: #22c55e;
@@ -38,7 +63,7 @@
         .main-island {
             top: 30%; left: 15%;
             width: 300px; height: 180px;
-            border-radius: 45% 55% 35% 65% / 50% 40% 60% 50%; /* Organic shape */
+            border-radius: 45% 55% 35% 65% / 50% 40% 60% 50%;
             transform: rotate(-2deg);
             display: flex; align-items: center; justify-content: center;
             z-index: 10;
@@ -52,7 +77,6 @@
         .island-7 { top: 45%; right: 3%; width: 120px; height: 80px; opacity: 0.8; border-radius: 20% 80% 40% 60% / 30% 70% 30% 70%; }
         .island-8 { top: 25%; left: 65%; width: 60px; height: 40px; opacity: 0.7; border-radius: 50%; }
 
-        /* --- THE BIG WORLD GLOBE --- */
         .globe-container {
             width: 450px;
             height: 450px;
@@ -83,35 +107,6 @@
             transform: translateX(-50%);
             width: 55px;
             height: 55px;
-        }
-
-        /* --- CARTOON CLOUD BAR --- */
-        .cloud-bar {
-            background: white;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
-            transform: translateY(100%);
-            opacity: 0;
-            padding-top: 40px; /* Space for the bumps */
-        }
-
-        /* The "Circle Bumps" */
-        .cloud-bar::before, .cloud-bar::after {
-            content: '';
-            position: absolute;
-            top: -30px;
-            background: white;
-            border-radius: 50%;
-        }
-
-        .cloud-bar::before {
-            width: 120px; height: 80px;
-            left: 10%;
-            box-shadow: 150px -10px 0 white, 300px 5px 0 white, 450px -15px 0 white, 600px 0 0 white, 750px -5px 0 white, 900px -10px 0 white;
-        }
-
-        .bar-visible {
-            transform: translateY(0);
-            opacity: 1;
         }
 
         .fluffy-popup {
@@ -182,18 +177,18 @@
         </div>
     </section>
 
-    <footer id="bottom-cloud" class="cloud-bar fixed bottom-0 w-full z-40 p-8 flex justify-center">
+    <footer id="bottom-cloud" class="fixed bottom-0 w-full p-8 flex justify-center">
         <button onclick="toggleContact()" class="bg-blue-600 text-white px-12 py-4 rounded-full font-black uppercase tracking-widest shadow-xl hover:scale-110 active:scale-95 transition-all">
-            Contact
+            Get In Touch
         </button>
     </footer>
 
-    <div id="contact-popup" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-blue-400/20 backdrop-blur-sm p-6">
+    <div id="contact-popup" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-blue-400/20 backdrop-blur-sm p-6">
         <div class="fluffy-popup w-full max-w-md p-10 text-center relative">
             <button onclick="toggleContact()" class="absolute top-6 right-8 text-blue-300 hover:text-blue-600 font-bold text-2xl">&times;</button>
             <h3 class="text-3xl font-black text-blue-900 italic mb-6">Let's Connect</h3>
             <div class="space-y-4 text-black font-bold text-lg">
-                <p>Email: <a href="mailto:sonny.eckford@gmail.com" class="hover:text-blue-600">sonny.eckford@gmail.com</a></p>
+                <p>Email: <a href="mailto:sonny.eckford@gmail.com" class="hover:text-blue-600 underline">sonny.eckford@gmail.com</a></p>
                 <p>Phone: 301-828-7290</p>
             </div>
         </div>
@@ -203,12 +198,12 @@
         const sun = document.getElementById('sun-logo');
         const nav = document.getElementById('cloud-nav');
         const bottomCloud = document.getElementById('bottom-cloud');
-        const globeTrigger = document.getElementById('globe-trigger');
         const popup = document.getElementById('contact-popup');
 
         window.addEventListener('scroll', () => {
             const scrollPos = window.scrollY;
-            const globePos = globeTrigger.offsetTop;
+            const windowHeight = window.innerHeight;
+            const fullHeight = document.documentElement.scrollHeight;
 
             // Header Logic
             if (scrollPos > 120) {
@@ -219,11 +214,11 @@
                 nav.classList.remove('nav-visible');
             }
 
-            // Bottom Cloud Logic (Appears when near the globe)
-            if (scrollPos > globePos - 200) {
-                bottomCloud.classList.add('bar-visible');
+            // Bottom Bar appears only at absolute bottom
+            if ((windowHeight + scrollPos) >= (fullHeight - 50)) {
+                bottomCloud.classList.add('nav-visible');
             } else {
-                bottomCloud.classList.remove('bar-visible');
+                bottomCloud.classList.remove('nav-visible');
             }
         });
 
