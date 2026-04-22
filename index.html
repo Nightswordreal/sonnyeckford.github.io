@@ -28,18 +28,29 @@
         .nav-visible { transform: translateY(0) !important; opacity: 1 !important; }
         .sun-hidden { transform: scale(0) translateY(-200px); opacity: 0; }
 
-        .sky-element {
+        /* --- IRREGULAR ISLANDS --- */
+        .island {
             position: absolute;
-            pointer-events: none;
-            z-index: 1;
+            background: #22c55e;
+            transition: background 0.3s ease;
         }
 
-        .cloud-shape {
-            background: white;
-            border-radius: 50px;
-            filter: blur(12px);
-            opacity: 0.6;
+        .main-island {
+            top: 30%; left: 15%;
+            width: 300px; height: 180px;
+            border-radius: 45% 55% 35% 65% / 50% 40% 60% 50%; /* Organic shape */
+            transform: rotate(-2deg);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10;
         }
+
+        .island-2 { top: 10%; right: 10%; width: 110px; height: 70px; opacity: 0.8; border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; }
+        .island-3 { bottom: 15%; right: 20%; width: 130px; height: 90px; opacity: 0.9; border-radius: 30% 70% 50% 50% / 40% 40% 60% 60%; }
+        .island-4 { top: 65%; left: 8%; width: 90px; height: 60px; opacity: 0.7; border-radius: 50% 50% 30% 70%; }
+        .island-5 { top: 5%; left: 12%; width: 100px; height: 55px; opacity: 0.6; border-radius: 70% 30% 50% 50%; }
+        .island-6 { bottom: 8%; left: 25%; width: 70px; height: 45px; opacity: 0.5; border-radius: 40% 60% 40% 60%; }
+        .island-7 { top: 45%; right: 3%; width: 120px; height: 80px; opacity: 0.8; border-radius: 20% 80% 40% 60% / 30% 70% 30% 70%; }
+        .island-8 { top: 25%; left: 65%; width: 60px; height: 40px; opacity: 0.7; border-radius: 50%; }
 
         /* --- THE BIG WORLD GLOBE --- */
         .globe-container {
@@ -60,31 +71,6 @@
             box-shadow: 0 40px 120px rgba(30, 58, 138, 0.3);
         }
 
-        .island {
-            position: absolute;
-            background: #22c55e;
-            border-radius: 50%;
-            transition: background 0.3s ease;
-        }
-
-        .main-island {
-            top: 35%; left: 20%;
-            width: 260px; height: 160px;
-            border-radius: 40% 60% 50% 40%;
-            transform: rotate(-5deg);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 10;
-        }
-
-        /* Spaced Islands */
-        .island-2 { top: 15%; right: 15%; width: 80px; height: 50px; opacity: 0.8; }
-        .island-3 { bottom: 20%; right: 25%; width: 100px; height: 70px; opacity: 0.9; }
-        .island-4 { top: 60%; left: 10%; width: 60px; height: 40px; opacity: 0.7; }
-        .island-5 { top: 10%; left: 10%; width: 70px; height: 40px; opacity: 0.6; border-radius: 60% 40% 60% 40%; }
-        .island-6 { bottom: 10%; left: 20%; width: 50px; height: 30px; opacity: 0.5; }
-        .island-7 { top: 50%; right: 5%; width: 90px; height: 60px; opacity: 0.8; border-radius: 30% 70% 40% 60%;}
-        .island-8 { top: 30%; left: 60%; width: 40px; height: 25px; opacity: 0.7; }
-
         @keyframes float-world {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-30px); }
@@ -92,20 +78,40 @@
 
         .tree {
             position: absolute;
-            top: -35px;
+            top: -40px;
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
         }
 
-        /* --- FLUFFY STYLES --- */
+        /* --- CARTOON CLOUD BAR --- */
         .cloud-bar {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
-            border-radius: 100px 100px 0 0;
-            box-shadow: 0 -10px 40px rgba(255, 255, 255, 0.8);
-            border-top: 4px solid white;
+            background: white;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+            transform: translateY(100%);
+            opacity: 0;
+            padding-top: 40px; /* Space for the bumps */
+        }
+
+        /* The "Circle Bumps" */
+        .cloud-bar::before, .cloud-bar::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud-bar::before {
+            width: 120px; height: 80px;
+            left: 10%;
+            box-shadow: 150px -10px 0 white, 300px 5px 0 white, 450px -15px 0 white, 600px 0 0 white, 750px -5px 0 white, 900px -10px 0 white;
+        }
+
+        .bar-visible {
+            transform: translateY(0);
+            opacity: 1;
         }
 
         .fluffy-popup {
@@ -143,17 +149,14 @@
         </div>
     </header>
 
-    <section class="relative min-h-screen flex flex-col items-center">
-        <div class="sky-element top-0 right-10 cloud-shape w-64 h-20"></div>
-        <div class="sky-element top-40 left-10 cloud-shape w-80 h-24"></div>
-
-        <div class="max-w-2xl text-center px-6 mb-10 z-20">
+    <section id="content-section" class="relative min-h-screen flex flex-col items-center">
+        <div class="max-w-2xl text-center px-6 -mt-10 mb-16 z-20">
             <p class="text-xl md:text-2xl font-semibold leading-relaxed text-blue-800/80 italic">
                 Sonny Eckford is a High school senior at Walt Whitman, committed to Drexel for material science and engineering; he is due to graduate with his masters in 2031.
             </p>
         </div>
 
-        <div class="mt-10 relative z-20">
+        <div id="globe-trigger" class="mt-4 relative z-20">
             <a href="projects.html" class="group flex flex-col items-center">
                 <div class="globe-container">
                     <div class="island island-2"></div>
@@ -171,7 +174,7 @@
                                 <rect x="45" y="90" width="10" height="10" fill="#451a03" />
                             </svg>
                         </div>
-                        <span class="text-white font-black uppercase text-3xl tracking-tighter group-hover:scale-110 transition-transform">Projects</span>
+                        <span class="text-white font-black uppercase text-4xl tracking-tighter group-hover:scale-110 transition-transform">Projects</span>
                     </div>
                 </div>
                 <p class="mt-12 font-black text-blue-900/40 uppercase tracking-[0.3em] text-lg group-hover:text-blue-600 transition-colors">Tap the world to explore</p>
@@ -179,8 +182,8 @@
         </div>
     </section>
 
-    <footer class="cloud-bar fixed bottom-0 w-full z-40 p-6 flex justify-center">
-        <button onclick="toggleContact()" class="bg-blue-600 text-white px-10 py-3 rounded-full font-black uppercase tracking-widest shadow-lg hover:scale-110 transition-transform">
+    <footer id="bottom-cloud" class="cloud-bar fixed bottom-0 w-full z-40 p-8 flex justify-center">
+        <button onclick="toggleContact()" class="bg-blue-600 text-white px-12 py-4 rounded-full font-black uppercase tracking-widest shadow-xl hover:scale-110 active:scale-95 transition-all">
             Contact
         </button>
     </footer>
@@ -190,17 +193,8 @@
             <button onclick="toggleContact()" class="absolute top-6 right-8 text-blue-300 hover:text-blue-600 font-bold text-2xl">&times;</button>
             <h3 class="text-3xl font-black text-blue-900 italic mb-6">Let's Connect</h3>
             <div class="space-y-4 text-black font-bold text-lg">
-                <p class="flex items-center justify-center gap-2">
-                    <span class="text-blue-500 uppercase text-xs tracking-widest">Email:</span>
-                    <a href="mailto:sonny.eckford@gmail.com" class="hover:underline">sonny.eckford@gmail.com</a>
-                </p>
-                <p class="flex items-center justify-center gap-2">
-                    <span class="text-blue-500 uppercase text-xs tracking-widest">Phone:</span>
-                    <span>301-828-7290</span>
-                </p>
-            </div>
-            <div class="mt-8 pt-6 border-t border-blue-100">
-                <p class="text-xs uppercase tracking-widest text-blue-300">Walt Whitman &bull; Drexel 2031</p>
+                <p>Email: <a href="mailto:sonny.eckford@gmail.com" class="hover:text-blue-600">sonny.eckford@gmail.com</a></p>
+                <p>Phone: 301-828-7290</p>
             </div>
         </div>
     </div>
@@ -208,26 +202,34 @@
     <script>
         const sun = document.getElementById('sun-logo');
         const nav = document.getElementById('cloud-nav');
+        const bottomCloud = document.getElementById('bottom-cloud');
+        const globeTrigger = document.getElementById('globe-trigger');
         const popup = document.getElementById('contact-popup');
 
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 120) {
+            const scrollPos = window.scrollY;
+            const globePos = globeTrigger.offsetTop;
+
+            // Header Logic
+            if (scrollPos > 120) {
                 sun.classList.add('sun-hidden');
                 nav.classList.add('nav-visible');
             } else {
                 sun.classList.remove('sun-hidden');
                 nav.classList.remove('nav-visible');
             }
+
+            // Bottom Cloud Logic (Appears when near the globe)
+            if (scrollPos > globePos - 200) {
+                bottomCloud.classList.add('bar-visible');
+            } else {
+                bottomCloud.classList.remove('bar-visible');
+            }
         });
 
         function toggleContact() {
-            if (popup.classList.contains('hidden')) {
-                popup.classList.remove('hidden');
-                popup.classList.add('flex');
-            } else {
-                popup.classList.add('hidden');
-                popup.classList.remove('flex');
-            }
+            popup.classList.toggle('hidden');
+            popup.classList.toggle('flex');
         }
     </script>
 </body>
